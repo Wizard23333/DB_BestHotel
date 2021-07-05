@@ -1,8 +1,25 @@
 {
   "version": 2,
-  "dgSpecHash": "gUuveoFjnfBOPo1Q6usWtqYIgiiH1MVpEVjWt5H1vWD9jlPwcUlMQIvVfdEOV/BlKiXyej9cP3Oi+CrsgMHlEQ==",
+  "dgSpecHash": "0XJlytuorUJ7idjiWhU8PqtDps74rE+c0cJNbDcJj+dJPKXWIbI871BFViN3Le6xsrUKHn9nfud+ORHnyseVYA==",
   "success": true,
-  "projectFilePath": "C:\\learn\\DB_BestHotel_Frontend\\backEnd\\backEnd\\backEnd.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\learn\\DB_BestHotel_Frontend\\BackEnd\\BackEnd\\BackEnd.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tan\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\oracle.manageddataaccess.core\\3.21.1\\oracle.manageddataaccess.core.3.21.1.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.diagnostics.performancecounter\\4.7.0\\system.diagnostics.performancecounter.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.directoryservices\\4.7.0\\system.directoryservices.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.directoryservices.protocols\\4.7.0\\system.directoryservices.protocols.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.io.filesystem.accesscontrol\\4.7.0\\system.io.filesystem.accesscontrol.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.security.cryptography.protecteddata\\4.7.0\\system.security.cryptography.protecteddata.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.security.permissions\\4.7.0\\system.security.permissions.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.text.json\\4.7.1\\system.text.json.4.7.1.nupkg.sha512",
+    "C:\\Users\\tan\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
+  ],
   "logs": []
 }
