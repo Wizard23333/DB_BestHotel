@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\learn\\DB_BestHotel_Frontend\\backEnd\\backEnd\\backEnd.csproj": {}
+    "C:\\learn\\DB_BestHotel_Frontend\\BackEnd\\BackEnd\\BackEnd.csproj": {}
   },
   "projects": {
-    "C:\\learn\\DB_BestHotel_Frontend\\backEnd\\backEnd\\backEnd.csproj": {
+    "C:\\learn\\DB_BestHotel_Frontend\\BackEnd\\BackEnd\\BackEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\learn\\DB_BestHotel_Frontend\\backEnd\\backEnd\\backEnd.csproj",
-        "projectName": "backEnd",
-        "projectPath": "C:\\learn\\DB_BestHotel_Frontend\\backEnd\\backEnd\\backEnd.csproj",
+        "projectUniqueName": "C:\\learn\\DB_BestHotel_Frontend\\BackEnd\\BackEnd\\BackEnd.csproj",
+        "projectName": "BackEnd",
+        "projectPath": "C:\\learn\\DB_BestHotel_Frontend\\BackEnd\\BackEnd\\BackEnd.csproj",
         "packagesPath": "C:\\Users\\tan\\.nuget\\packages\\",
-        "outputPath": "C:\\learn\\DB_BestHotel_Frontend\\backEnd\\backEnd\\obj\\",
+        "outputPath": "C:\\learn\\DB_BestHotel_Frontend\\BackEnd\\BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tan\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,6 +39,12 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Oracle.ManagedDataAccess.Core": {
+              "target": "Package",
+              "version": "[3.21.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
