@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0XJlytuorUJ7idjiWhU8PqtDps74rE+c0cJNbDcJj+dJPKXWIbI871BFViN3Le6xsrUKHn9nfud+ORHnyseVYA==",
+  "dgSpecHash": "iGVnbPJC9m9kS46CdMpsaNOus+B5lTVAd0qB1PUcYv1hcFs0curVwsiCmks5xiqHtzNy2pDXAob9UqKu7R3tZA==",
   "success": true,
-  "projectFilePath": "C:\\learn\\DB_BestHotel_Frontend\\BackEnd\\BackEnd\\BackEnd.csproj",
+  "projectFilePath": "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tan\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\tan\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
