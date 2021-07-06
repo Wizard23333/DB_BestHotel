@@ -9,7 +9,7 @@ using BackEnd;
 namespace BackEnd.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class testController : ControllerBase
     {
         private readonly ILogger<testController> _logger;

@@ -43,6 +43,10 @@
             "Oracle.ManagedDataAccess.Core": {
               "target": "Package",
               "version": "[3.21.1, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.4, )"
             }
           },
           "imports": [
