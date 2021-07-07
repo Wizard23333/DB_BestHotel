@@ -375,7 +375,104 @@ room参数
 | ----------- | -------- | -------- | ---------------- |
 | dish_delete | 删除状况 | bool     | 1：成功；0：失败 |
 
+## 1.7员工管理
 
+#### 1.7.1员工列表
+
++ 请求参数
+
+无请求参数，希望后端把所有staff表项按结构体数组返回
+
++ 响应参数
+
+staff参数
+
+| 参数名                              | 参数说明 | 参数类型 | 备注     |
+| ----------------------------------- | -------- | -------- | -------- |
+| staff_id                            |          | 字符串   | 不能为空 |
+| staff_name                          |          | 字符串   | 不能为空 |
+| staff_sex(建议后端改为staff_gender) |          | 字符串   | 不能为空 |
+| staff_age                           |          | 数值     |          |
+| staff_identity_card_number          |          | 字符串   |          |
+| staff_address                       | 住址     | 字符串   |          |
+| staff_department                    | 部门     | 字符串   |          |
+| staff_position                      | 职位     | 字符串   |          |
+| staff_entry_date                    | 入职日期 | 字符串   |          |
+| staff_salary                        |          | 数值     |          |
+
+
+| 参数名 | 参数说明   | 参数类型 | 备注 |
+| ------ | ---------- | -------- | ---- |
+| staffs | staff JSON | JSON     |      |
+
+```javascript
+{
+"staffs": [
+{ 				
+  staffID: "11111",
+  staffName: "张三",
+  staffGender: "男",
+  staffAge: "20",
+  staffIdentityCardNumber: "429000000000000000",
+  staffAddress: "20号楼",
+  staffDepartment: "保洁部",
+  staffPosition: "洗碗工",
+  staffEntryDate: "2020-01-20",
+  staffSalary: "10000000",
+},
+{
+  staffID: "12345",
+  staffName: "莉丝",
+  staffGender: "女",
+  staffAge: "29",
+  staffIdentityCardNumber: "429000000011100000",
+  staffAddress: "19号楼",
+  staffDepartment: "保安部",
+  staffPosition: "保安队长",
+  staffEntryDate: "2020-01-29",
+  staffSalary: "900000",
+}]
+}
+```
+
+#### 1.7.2修改员工信息
+
+请求参数（通过 id确定修改员工，其余信息为修改后的新信息）
+
+| 参数名                              | 参数说明 | 参数类型 | 备注     |
+| ----------------------------------- | -------- | -------- | -------- |
+| staff_id                            |          | 字符串   | 不能为空 |
+| staff_name                          |          | 字符串   | 不能为空 |
+| staff_sex(建议后端改为staff_gender) |          | 字符串   | 不能为空 |
+| staff_age                           |          | 数值     |          |
+| staff_identity_card_number          |          | 字符串   |          |
+| staff_address                       | 住址     | 字符串   |          |
+| staff_department                    | 部门     | 字符串   |          |
+| staff_position                      | 职位     | 字符串   |          |
+| staff_entry_date                    | 入职日期 | 字符串   |          |
+| staff_salary                        |          | 数值     |          |
+
+
+响应参数
+
+| 参数名       | 参数说明 | 参数类型 | 备注             |
+| ------------ | -------- | -------- | ---------------- |
+| update_state | 修改状况 | bool     | 1：成功；0：失败 |
+
+#### 1.7.3删除员工
+
+请求参数（通过 id定位被删除的房间）
+
+| 参数名   | 参数说明 | 参数类型 | 备注     |
+| -------- | -------- | -------- | -------- |
+| staff_id | 员工id   | 字符串   | 不能为空 |
+
+
+响应参数
+
+| 参数名       | 参数说明 | 参数类型 | 备注             |
+| ------------ | -------- | -------- | ---------------- |
+| delete_state | 删除状况 | bool     | 1：成功；0：失败 |
 
 <p style = "color: red">参数类型只有（字符串，数字，null，bool）</p>
 
