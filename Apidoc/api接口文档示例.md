@@ -522,6 +522,86 @@ staff参数
 | ------------- | ----------- | -------- | ---- |
 | client_mobile | 用户 手机号 | 字符串   |      |
 
+## 1.9 客户界面请求
+
+### 1.9.1 获取房间类型信息
+
+- 请求参数：无，给出所有房间类型信息
+
+- 响应参数
+
+| 参数名        | 参数说明           | 参数类型 | 备注                    |
+| ------------- | ------------------ | -------- | ----------------------- |
+| room_type     | 房间类型           | 数值     | 不能为空                |
+| room_price    | 房间价格           | 数值     | 不能为空                |
+| room_workable | 此房间类型是否空余 | bool     | true为空余，false为已满 |
+| room_picture  | 房间图片           | url      | 不能为空                |
+| room_explain  | 房间文案           | 字符串   | 不能为空                |
+
+| 参数名           | 参数说明              | 参数类型 | 备注 |
+| ---------------- | --------------------- | -------- | ---- |
+| custom_room_info | custom_room_info.JSON | JSON     |      |
+
+```javascript
+{
+"custom_room_info": [
+{ 				
+  room_type: "单人间",
+  room_price: "150",
+  room_workable: true,
+  room_picture: "url",
+  room_explain: "卸下工作的一身疲惫,让身体陶醉于轻松的呵护,放飞心情,细细体会释放的雅趣这里,是一处静谧的港湾;这里,时间也放慢了脚步",
+},
+{
+  room_type: "双人间",
+  room_price: "200",
+  room_workable: true,
+  room_picture: "url",
+  room_explain: "自然主义的规划设计, 庄重典雅的格式布局, 在现代与古典之间, 建构绵延不息的辉煌",
+}]
+}
+```
+
+### 1.9.2 获取菜单信息
+
+- 请求参数：无，给出所有菜品信息
+
+- 响应参数
+
+| 参数名     | 参数说明 | 参数类型 | 备注     |
+| ---------- | -------- | -------- | -------- |
+| dish_name  | 菜品名   | 字符串   | 不能为空 |
+| dish_price | 菜品价格 | 数值     | 不能为空 |
+|            |          |          |          |
+|            |          |          |          |
+|            |          |          |          |
+
+| 参数名           | 参数说明              | 参数类型 | 备注 |
+| ---------------- | --------------------- | -------- | ---- |
+| custom_room_info | custom_room_info.JSON | JSON     |      |
+
+```javascript
+{
+"custom_room_info": [
+{ 				
+  room_type: "单人间",
+  room_price: "150",
+  room_workable: true,
+  room_picture: "url",
+  room_explain: "卸下工作的一身疲惫,让身体陶醉于轻松的呵护,放飞心情,细细体会释放的雅趣这里,是一处静谧的港湾;这里,时间也放慢了脚步",
+},
+{
+  room_type: "双人间",
+  room_price: "200",
+  room_workable: true,
+  room_picture: "url",
+  room_explain: "自然主义的规划设计, 庄重典雅的格式布局, 在现代与古典之间, 建构绵延不息的辉煌",
+}]
+}
+```
+
+### 
+
 
 <p style = "color: red">参数类型只有（字符串，数字，null，bool）</p>
 
