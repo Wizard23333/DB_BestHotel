@@ -46,21 +46,18 @@ namespace BackEnd.Models
         }
 
         //初步专用测试
-        public static string test()
+        public static List<User> test()
         {
 
-            string id="";
             OracleCommand Search = DB.CreateCommand();
             Search.CommandText = "select * from EMPLOYEE";
             OracleDataReader Ord = Search.ExecuteReader();
+            List<User> a = new List<User>();
             while (Ord.Read())
             {
-                id  = Ord.GetValue(0).ToString();
+                a.Add(new User { UserID = Ord.GetValue(0).ToString(), UserPassword = Ord.GetValue(1).ToString() });
             }
-            
-            return id;
-           
-
+            return a;
         }
         //向Users表中增加一个新用户(注册)
         //添加成功返回UserID，添加失败返回“0”

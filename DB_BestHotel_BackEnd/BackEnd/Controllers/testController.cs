@@ -19,21 +19,19 @@ namespace BackEnd.Controllers
             _logger = logger;
         }
         [HttpGet]
-        public string Get()
-        {
-            return "HelloWorld";
+        [ApiResponseFilterAttribute]
+        public StatusCodeResult Get()
+        { 
+            return new StatusCodeResult(402);
         }
         [HttpPost]
+        [ApiResponseFilterAttribute]
         public IEnumerable<User> Post()
         {
             DataAccess.CreateConn();
-            string ID = DataAccess.test();
+            var ID = DataAccess.test();
             DataAccess.CloseConn();
-            return Enumerable.Range(0,1).Select(index => new User
-            {
-                UserID=ID,
-            })
-            .ToArray();
+            return Enumerable.ToArray(ID);
         }
     }
 }
