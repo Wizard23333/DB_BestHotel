@@ -476,6 +476,7 @@ room参数（有入住人时，返回相应信息，无则空）
 | dish_explain | 菜品文案 | 字符串   | 不能为空 |
 | dish_price   | 菜品价格 | 数值     | 不能为空 |
 | dish_name    | 菜品名   | 字符串   | 不能为空 |
+| dish_picture | 菜品图片 | 暂定     | 不能为空 |
 
 
 响应参数（添加成功，需返回分配的dish_id）
@@ -606,7 +607,7 @@ staff参数
 | staff_entry_date                    | 入职日期 | 字符串   |          |
 | staff_salary                        |          | 数值     |          |
 
-#### 
+
 
 ## 1.8. 客户个人信息
 
