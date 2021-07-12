@@ -98,7 +98,7 @@ namespace BackEnd.Models
         }
 
 
-        public static List<Order> DisplayOrderInfo(string query,out int total)
+        public static List<Order> DisplayOrderInfo(string query)
         {
             List<Order> orders = new List<Order>();
             OracleCommand Search = DB.CreateCommand();
@@ -108,8 +108,6 @@ namespace BackEnd.Models
             {
                 orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), order_date = Ord.GetValue(3).ToString(), amount = (int)Ord.GetValue(4), state = (int)Ord.GetValue(5) });
             }
-
-            total = orders.Count();
             return orders;
         }
     }
