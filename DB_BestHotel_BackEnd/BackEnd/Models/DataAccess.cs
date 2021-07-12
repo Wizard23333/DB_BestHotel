@@ -97,7 +97,7 @@ namespace BackEnd.Models
             return a;
         }
 
-
+        //查询数据库中所有订单信息
         public static List<Order> DisplayOrderInfo(string query)
         {
             List<Order> orders = new List<Order>();
@@ -111,7 +111,7 @@ namespace BackEnd.Models
             return orders;
         }
 
-
+        //修改订单信息
         public static int Modify(string order_id)
         {
             OracleCommand Update = DB.CreateCommand();
@@ -121,6 +121,7 @@ namespace BackEnd.Models
             return Result;
         }
 
+        //查询订单信息
         public static Order Query(string order_id)
         {
             OracleCommand Search = DB.CreateCommand();

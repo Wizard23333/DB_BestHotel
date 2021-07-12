@@ -16,23 +16,26 @@ namespace BackEnd.Controllers
     {
 
 
+        //Post /api/Order/OrderInfo
+        //返回数据库中所有的订单信息
 
-        [HttpPost("Post")]
+        [HttpPost("OrderInfo")]
         [ApiResponseFilterAttribute]
-        public List<Order> Post( out int total,string query = "*")
+        public List<Order> OrderInfo(string query = "*")
         {
             DataAccess.CreateConn();
-            var OrderList = DataAccess.DisplayOrderInfo(query);
-            total= OrderList.Count();
+            var OrderList = DataAccess.DisplayOrderInfo(query);        
             DataAccess.CloseConn();
             return OrderList;
         }
 
+        //Post /api/Order/OrderQuery
+        //返回数据库中对应order_id的订单信息
 
         [HttpPost("OrderQuery")]
         [ApiResponseFilterAttribute]
 
-        public Order OrderQuery(string order_id)
+        public ActionResult<Order> OrderQuery(string order_id)
         {
             DataAccess.CreateConn();
             var order = DataAccess.Query(order_id);
@@ -40,6 +43,8 @@ namespace BackEnd.Controllers
             return order;
         }
 
+        //Post /api/Order/OrderModify
+        //修改数据库中对应order_id的订单信息
 
         [HttpPost("OrderModify")]
         [ApiResponseFilterAttribute]
