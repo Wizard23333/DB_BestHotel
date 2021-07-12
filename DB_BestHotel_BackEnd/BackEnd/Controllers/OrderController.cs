@@ -17,7 +17,7 @@ namespace BackEnd.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("Post")]
         [ApiResponseFilterAttribute]
         public List<Order> Post( out int total,string query = "*")
         {
@@ -29,7 +29,7 @@ namespace BackEnd.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("OrderQuery")]
         [ApiResponseFilterAttribute]
 
         public Order OrderQuery(string order_id)
@@ -41,7 +41,7 @@ namespace BackEnd.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("OrderModify")]
         [ApiResponseFilterAttribute]
 
         public bool OrderModify(string order_id)
