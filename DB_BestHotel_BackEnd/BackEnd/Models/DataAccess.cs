@@ -112,10 +112,32 @@ namespace BackEnd.Models
         }
 
 
-        public static void Modify(string order_id)
+        public static int Modify(string order_id)
+        {
+            OracleCommand Update = DB.CreateCommand();
+            Update.CommandText = "update room_order set state=3 where order_id=:order_id";
+            Update.Parameters.Add(new OracleParameter(":order_id", order_id));
+            int Result = Update.ExecuteNonQuery();
+            return Result;
+        }
+
+        public static Order Query(string order_id)
         {
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select * from room_order where user_id=:user_id";
+            Search.CommandText = "select * from room_order where order_id=:order_id";
+            Search.Parameters.Add(new OracleParameter(":order_id", order_id));
+            OracleDataReader Ord = Search.ExecuteReader();
+            Order order = new Order();
+            while (Ord.Read())
+            {
+                order.order_id = Ord.GetValue(0).ToString();
+                order.client_id = Ord.GetValue(1).ToString();
+                order.order_date = Ord.GetValue(3).ToString();
+                order.amount = (int)Ord.GetValue(4);
+                order.state = (int)Ord.GetValue(5);
+                
+            }
+            return order;
         }
 
 
