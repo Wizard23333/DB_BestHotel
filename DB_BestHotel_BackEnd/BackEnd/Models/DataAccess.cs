@@ -91,5 +91,18 @@ namespace BackEnd.Models
             return U;
         }
 
+
+        public static List<Order> DisplayOrderInfo(string query)
+        {
+            List<Order> orders = new List<Order>();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select " + query + "from room_order";
+            OracleDataReader Ord = Search.ExecuteReader();
+            while (Ord.Read())
+            {
+                orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), order_date = Ord.GetValue(3).ToString(), amount = (int)Ord.GetValue(4), state = (int)Ord.GetValue(5) });
+            }
+            return orders;
+        }
     }
 }
