@@ -19,11 +19,10 @@ namespace BackEnd.Controllers
 
         [HttpPost]
         [ApiResponseFilterAttribute]
-        public List<Order> Post( string query = "*",out int total)
+        public List<Order> Post( string query = "*")
         {
             DataAccess.CreateConn();
-            var OrderList = DataAccess.DisplayOrderInfo(query);
-            total= OrderList.Count();
+            var OrderList =DataAccess.DisplayOrderInfo(query);
             DataAccess.CloseConn();
             return OrderList;
         }
