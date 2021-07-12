@@ -65,4 +65,3 @@ C:\learn\DB_BestHotel_Frontend\DB_BestHotel_BackEnd\BackEnd\obj\Debug\netcoreapp
 C:\learn\DB_BestHotel_Frontend\DB_BestHotel_BackEnd\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.dll
 C:\learn\DB_BestHotel_Frontend\DB_BestHotel_BackEnd\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.pdb
 C:\learn\DB_BestHotel_Frontend\DB_BestHotel_BackEnd\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.genruntimeconfig.cache
-C:\Users\惠普\Desktop\DB_BestHotel_Frontend\DB_BestHotel_BackEnd\BackEnd\obj\Debug\netcoreapp3.1\BackEnd.pdb

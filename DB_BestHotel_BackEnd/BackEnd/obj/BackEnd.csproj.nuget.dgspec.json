@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\惠普\\Desktop\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj": {}
+    "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj": {}
   },
   "projects": {
-    "C:\\Users\\惠普\\Desktop\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj": {
+    "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\惠普\\Desktop\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
+        "projectUniqueName": "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
         "projectName": "BackEnd",
-        "projectPath": "C:\\Users\\惠普\\Desktop\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
-        "packagesPath": "C:\\Users\\惠普\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\惠普\\Desktop\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\obj\\",
+        "projectPath": "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
+        "packagesPath": "C:\\Users\\tan\\.nuget\\packages\\",
+        "outputPath": "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\惠普\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\tan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
