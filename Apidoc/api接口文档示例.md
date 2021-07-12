@@ -519,18 +519,19 @@ room参数（有入住人时，返回相应信息，无则空）
 
 staff参数
 
-| 参数名                              | 参数说明 | 参数类型 | 备注     |
-| ----------------------------------- | -------- | -------- | -------- |
-| staff_id                            |          | 字符串   | 不能为空 |
-| staff_name                          |          | 字符串   | 不能为空 |
-| staff_sex(建议后端改为staff_gender) |          | 字符串   | 不能为空 |
-| staff_age                           |          | 数值     |          |
-| staff_identity_card_number          |          | 字符串   |          |
-| staff_address                       | 住址     | 字符串   |          |
-| staff_department                    | 部门     | 字符串   |          |
-| staff_position                      | 职位     | 字符串   |          |
-| staff_entry_date                    | 入职日期 | 字符串   |          |
-| staff_salary                        |          | 数值     |          |
+| 参数名                              | 参数说明     | 参数类型 | 备注     |
+| ----------------------------------- | ------------ | -------- | -------- |
+| staff_id                            |              | 字符串   | 不能为空 |
+| staff_name                          |              | 字符串   | 不能为空 |
+| staff_sex(建议后端改为staff_gender) |              | 字符串   | 不能为空 |
+| staff_age                           |              | 数值     |          |
+| staff_identity_card_number          |              | 字符串   |          |
+| staff_address                       | 住址         | 字符串   |          |
+| staff_department                    | 部门         | 字符串   |          |
+| leader_id                           | 上司员工编号 | 字符串   |          |
+| staff_position                      | 职位         | 字符串   |          |
+| staff_entry_date                    | 入职日期     | 字符串   |          |
+| staff_salary                        |              | 数值     |          |
 
 
 | 参数名 | 参数说明   | 参数类型 | 备注 |
@@ -548,6 +549,7 @@ staff参数
   staffIdentityCardNumber: "429000000000000000",
   staffAddress: "20号楼",
   staffDepartment: "保洁部",
+  leader_id: "TONY",
   staffPosition: "洗碗工",
   staffEntryDate: "2020-01-20",
   staffSalary: "10000000",
@@ -560,6 +562,7 @@ staff参数
   staffIdentityCardNumber: "429000000011100000",
   staffAddress: "19号楼",
   staffDepartment: "保安部",
+  leader_id: "TONY",
   staffPosition: "保安队长",
   staffEntryDate: "2020-01-29",
   staffSalary: "900000",
@@ -580,6 +583,7 @@ staff参数
 | staff_identity_card_number          |          | 字符串   |          |
 | staff_address                       | 住址     | 字符串   |          |
 | staff_department                    | 部门     | 字符串   |          |
+| leader_id                           | 上司员工编号 | 字符串   |          |
 | staff_position                      | 职位     | 字符串   |          |
 | staff_entry_date                    | 入职日期 | 字符串   |          |
 | staff_salary                        |          | 数值     |          |
@@ -587,9 +591,7 @@ staff参数
 
 响应参数
 
-| 参数名       | 参数说明 | 参数类型 | 备注             |
-| ------------ | -------- | -------- | ---------------- |
-| update_state | 修改状况 | bool     | 1：成功；0：失败 |
+
 
 #### 1.7.3删除员工
 
@@ -602,9 +604,7 @@ staff参数
 
 响应参数
 
-| 参数名       | 参数说明 | 参数类型 | 备注             |
-| ------------ | -------- | -------- | ---------------- |
-| delete_state | 删除状况 | bool     | 1：成功；0：失败 |
+
 #### 1.7.4获取员工个人信息
 
 请求参数
@@ -624,6 +624,7 @@ staff参数
 | staff_identity_card_number          |          | 字符串   |          |
 | staff_address                       | 住址     | 字符串   |          |
 | staff_department                    | 部门     | 字符串   |          |
+| leader_id                           | 上司员工编号 | 字符串   |          |
 | staff_position                      | 职位     | 字符串   |          |
 | staff_entry_date                    | 入职日期 | 字符串   |          |
 | staff_salary                        |          | 数值     |          |
