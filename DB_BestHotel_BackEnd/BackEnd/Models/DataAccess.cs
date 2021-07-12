@@ -98,7 +98,7 @@ namespace BackEnd.Models
         }
 
 
-        public static List<Order> DisplayOrderInfo(string query)
+        public static List<Order> DisplayOrderInfo(string query,out int total)
         {
             List<Order> orders = new List<Order>();
             OracleCommand Search = DB.CreateCommand();
