@@ -21,7 +21,7 @@ namespace BackEnd.Models
     {
         public decimal room_price { get; set; }
         public string room_type { get; set; }
-        public bool room_workable { get; set; }
+        public decimal room_workable { get; set; }
         public string room_url { get; set; }
         public string room_explain { get; set; }
     }
