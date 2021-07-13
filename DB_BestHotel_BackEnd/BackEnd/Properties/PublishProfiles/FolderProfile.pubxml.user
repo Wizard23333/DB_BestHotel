@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <History>True|2021-07-13T12:36:43.9298837Z;True|2021-07-13T19:18:44.1385706+08:00;False|2021-07-13T19:17:04.2983302+08:00;</History>
+    <_PublishTargetUrl>C:\Users\tan\Desktop\AttendanceWeb</_PublishTargetUrl>
+  </PropertyGroup>
+</Project>
