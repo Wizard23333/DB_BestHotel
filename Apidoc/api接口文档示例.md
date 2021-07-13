@@ -792,67 +792,79 @@ staff参数
 
 ```javascript
 {
-    "code": 200,
-    "data": [
+  "code": 200,
+  "data": [
+    {
+      "monitor_id": "0001",
+      "rooms": [
         {
-          "monitorID": "123321",
-          "rooms": [
-            { "roomID": "222222" },
-            { "roomID": "111222" },
-            { "roomID": "224422" },
-          ],
+          "room_id": "1001"
+        }
+      ]
+    },
+    {
+      "monitor_id": "0002",
+      "rooms": [
+        {
+          "room_id": "1002"
+        }
+      ]
+    },
+    {
+      "monitor_id": "0004",
+      "rooms": [
+        {
+          "room_id": "1023"
+        }
+      ]
+    },
+    {
+      "monitor_id": "0006",
+      "rooms": [
+        {
+          "room_id": "1040"
         },
         {
-          "monitorID": "123455",
-          rooms: [
-            { "roomID": "553355" },
-            { "roomID": "557755" },
-            { "roomID": "558785" },
-            { "roomID": "500055" },
-          ],
+          "room_id": "4412"
+        }
+      ]
+    },
+    {
+      "monitor_id": "0003",
+      "rooms": [
+        {
+          "room_id": "5042"
+        }
+      ]
+    },
+    {
+      "monitor_id": "0005",
+      "rooms": [
+        {
+          "room_id": "9056"
+        }
+      ]
+    }
+  ]
 }
 ```
 
 
 
-### 1.10.2修改监控信息
+
+### 1.10.2增加监控
 
 + 请求参数
 
 ```json
 {
-      "monitorID": "123321",
-      "rooms": [
-        { "roomID": "222222" },
-        { "roomID": "111222" },
-        { "roomID": "224422" },
-      ],
- },
-```
-
-修改后的监控信息
-
-+ 返回参数
-
-```json
-{
-    "code": 200,
+  "monitor_id": "0006",
+  "rooms": [
+    {
+      "room_id": "4412"（room表必须有）
+    }
+  ]
 }
-```
-
-### 1.10.3增加监控
-
-+ 请求参数
-
-```json
-{
-      "monitorID": "123321",
-      "rooms": [
-        { "roomID": "222222" },
-        { "roomID": "111222" },
-        { "roomID": "224422" },
-      ],
- },
 ```
 
 增加的监控信息
@@ -862,17 +874,23 @@ staff参数
 ```json
 {
     "code": 200,
+    "data": ""
 }
 ```
 
-### 1.10.4删除监控
+### 1.10.3删除监控
 
 + 请求参数
 
 ```json
 {
-      "monitorID": "123321",
- },
+  "monitor_id": "0006",
+  "rooms": [
+    {
+      "room_id": "4412"（随便填）
+    }
+  ]
+}
 ```
 
 需要删除的监控id
@@ -882,7 +900,7 @@ staff参数
 ```json
 {
     "code": 200,
-
+    "data": ""
 }
 ```
 

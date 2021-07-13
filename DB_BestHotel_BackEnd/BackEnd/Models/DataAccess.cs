@@ -277,12 +277,56 @@ namespace BackEnd.Models
             List<MonitorRequest> a = new List<MonitorRequest>();
             while (Ord.Read())
             {
-                List<MonitorRoom> b = new List<MonitorRoom>();
-                for (int i = 1; i < Ord.FieldCount; i++)
-                    b.Add(new MonitorRoom { room_id = Ord.GetValue(i).ToString() });
-                a.Add(new MonitorRequest { monitor_id = Ord.GetValue(0).ToString(), rooms = b });
+                int count = a.Count();
+                if ((count != 0) && (Ord.GetValue(0).ToString() == a[count - 1].monitor_id))
+                {
+                    a[count - 1].rooms.Add(new MonitorRoom { room_id = Ord.GetValue(1).ToString() });
+                }
+                else
+                {
+                    List<MonitorRoom> b = new List<MonitorRoom>();
+                    for (int i = 1; i < Ord.FieldCount; i++)
+                        b.Add(new MonitorRoom { room_id = Ord.GetValue(i).ToString() });
+                    a.Add(new MonitorRequest { monitor_id = Ord.GetValue(0).ToString(), rooms = b });
+                }
             }
             return a;
+        }
+
+        //修改监控信息
+        public static bool DelMonitor(MonitorRequest value)
+        {
+            CreateConn();
+            OracleCommand CMD = DB.CreateCommand();
+            CMD.CommandText = "delete from monitoring_facilities_room where CAMERA_ID=:camera_id";
+            CMD.Parameters.Add(new OracleParameter(":camera_id", value.monitor_id));
+            OracleDataReader Ord = CMD.ExecuteReader();
+            int Result = CMD.ExecuteNonQuery();
+            CloseConn();
+            if (Result <0)
+                return false;
+            else
+                return true;
+        }
+        public static bool AddMonitor(MonitorRequest value)
+        {
+            CreateConn();
+            int Result = 0;
+            int Count = value.rooms.Count();
+            for (int i = 0; i < Count; i++)
+            {
+                OracleCommand CMD = DB.CreateCommand();
+                CMD.CommandText = "insert into monitoring_facilities_room values(:room_id,:camera_id)";
+                CMD.Parameters.Add(new OracleParameter(":room_id", value.rooms[i].room_id));
+                CMD.Parameters.Add(new OracleParameter(":camera_id", value.monitor_id));
+                OracleDataReader Ord = CMD.ExecuteReader();
+                Result += CMD.ExecuteNonQuery();
+            }
+            CloseConn();
+            if (Result <= 0)
+                return false;
+            else
+                return true;
         }
     }
 

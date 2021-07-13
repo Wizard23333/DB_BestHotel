@@ -33,6 +33,37 @@ namespace BackEnd.Controllers
             }
             return null;
         }
-        
+        [HttpPost]
+        [Route("api/[controller]/Del")]
+        [ApiResponseFilterAttribute]
+        public StatusCodeResult Post([FromBody] MonitorRequest value)
+        {
+            try
+            {
+                if (DataAccess.DelMonitor(value)==true)
+                    return new StatusCodeResult(200);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new StatusCodeResult(501); 
+        }
+        [HttpPost]
+        [Route("api/[controller]/Add")]
+        [ApiResponseFilterAttribute]
+        public StatusCodeResult Post1([FromBody] MonitorRequest value)
+        {
+            try
+            {
+                if (DataAccess.AddMonitor(value) == true)
+                    return new StatusCodeResult(200);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new StatusCodeResult(501);
+        }
     }
 }
