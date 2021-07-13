@@ -9,7 +9,7 @@ using BackEnd;
 
 namespace BackEnd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Room")]
     [ApiController]
     public class RoomController : ControllerBase
     {
@@ -20,10 +20,91 @@ namespace BackEnd.Controllers
             DataAccess.CreateConn();
             var RoomList = DataAccess.DisplayRoomInfo();
             DataAccess.CloseConn();
+            return RoomList;
+        }
+
+
+
+        [HttpPost("RoomModify")]
+        [ApiResponseFilterAttribute]
+
+        public bool RoomModify(string room_id, int room_price, int room_type, string room_condition)
+        {
+            DataAccess.CreateConn();
+            int Result = DataAccess.ModifyRoomInfo(room_id, room_price, room_type, room_condition);
+            DataAccess.CloseConn();
+            if (Result == 1)
+                return true;
+            else return false;
+        }
+
+
+        [HttpPost("RoomDelete")]
+        [ApiResponseFilterAttribute]
+
+        public bool RoomDelete(string room_id)
+        {
+            DataAccess.CreateConn();
+            int Result = DataAccess.DeleteRoomInfo(room_id);
+            DataAccess.CloseConn();
+            if (Result == 1)
+                return true;
+            else return false;
+        }
+
+
+        [HttpPost("RoomAdd")]
+        [ApiResponseFilterAttribute]
+
+        public bool RoomAdd(string room_condition, int room_price, int room_type)//待修改
+        {
+            DataAccess.CreateConn();
+            int Result = DataAccess.AddRoomInfo(room_condition, room_price, room_type);
+            DataAccess.CloseConn();
+            if (Result == 1)
+                return true;
+            else return false;
+        }
+
+
+        [HttpPost("RoomTypeInfo")]
+        [ApiResponseFilterAttribute]
+        public List<RoomTypeInfo> RoomTypeInfo()
+        {
+            DataAccess.CreateConn();
+            var RoomTypeInfoList = DataAccess.DisplayRoomTypeInfo();
+            DataAccess.CloseConn();
             /*List<Order> OrderList = new List<Order>();
             OrderList.Add(new Order { order_date = "1" });
             OrderList.Add(new Order { order_date = "1" });*/
-            return RoomList;
+            return RoomTypeInfoList;
+        }
+
+        [HttpPost("RoomTypeAdd")]
+        [ApiResponseFilterAttribute]
+
+        public bool RoomTypeAdd(int room_type, string room_url, string room_explain)
+        {
+            DataAccess.CreateConn();
+            int Result = DataAccess.AddRoomTypeInfo(room_type, room_url, room_explain);
+            DataAccess.CloseConn();
+            if (Result == 1)
+                return true;
+            else return false;
+        }
+
+
+        [HttpPost("RoomTypeDelete")]
+        [ApiResponseFilterAttribute]
+
+        public bool RoomTypeDelete(int room_type)
+        {
+            DataAccess.CreateConn();
+            int Result = DataAccess.DeleteRoomTypeInfo(room_type);
+            DataAccess.CloseConn();
+            if (Result == 1)
+                return true;
+            else return false;
         }
     }
 }

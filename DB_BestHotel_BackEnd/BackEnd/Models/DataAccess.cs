@@ -112,7 +112,7 @@ namespace BackEnd.Models
         }
 
         //修改订单信息
-        public static int Modify(string order_id)
+        public static int ModifyOrderInfo(string order_id)
         {
             OracleCommand Update = DB.CreateCommand();
             Update.CommandText = "update room_order set state=3 where order_id=:order_id";
@@ -122,7 +122,7 @@ namespace BackEnd.Models
         }
 
         //查询订单信息
-        public static Order Query(string order_id)
+        public static Order QueryOrderInfo(string order_id)
         {
             OracleCommand Search = DB.CreateCommand();
             Search.CommandText = "select * from room_order where order_id=:order_id";
@@ -177,6 +177,72 @@ namespace BackEnd.Models
                 rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price =(int) Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = Ord.GetValue(3).ToString(), name = Ord.GetValue(5).ToString(),phone= Ord.GetValue(5).ToString() ,time= Ord.GetValue(5).ToString() });
             }
             return rooms;
+        }
+
+
+        public static int ModifyRoomInfo(string room_id,int room_price,int room_type,string room_condition)
+        {
+            OracleCommand Update = DB.CreateCommand();
+            Update.CommandText = "update room set room_id=:room_id,room_price=:room_price,room_type=:room_type,room_condition=:room_condition  where room_id=:room_id";
+            Update.Parameters.Add(new OracleParameter(":room_id", room_id));
+            Update.Parameters.Add(new OracleParameter(":room_price", room_price));
+            Update.Parameters.Add(new OracleParameter(":room_type", room_type));
+            Update.Parameters.Add(new OracleParameter(":room_condition", room_condition));
+            int Result = Update.ExecuteNonQuery();
+            return Result;
+        }
+
+        public static int DeleteRoomInfo(string room_id)
+        {
+            OracleCommand Delete = DB.CreateCommand();
+            Delete.CommandText = "delete from room where room_id=:room_id";
+            Delete.Parameters.Add(new OracleParameter(":room_id", room_id));
+            int Result = Delete.ExecuteNonQuery();
+            return Result;
+        }
+
+        public static int AddRoomInfo(string room_condition, int room_price, int room_type )
+        {
+            OracleCommand Insert = DB.CreateCommand();
+            Insert.CommandText = "insert into room output inserted.room_id values(sys_guid(),:room_price,:room_type,:room_condition)";
+            Insert.Parameters.Add(new OracleParameter(":room_price", room_price));
+            Insert.Parameters.Add(new OracleParameter(":room_type", room_type));
+            Insert.Parameters.Add(new OracleParameter(":room_condition", room_condition));
+            int Result=Insert.ExecuteNonQuery();
+            return Result;
+        }
+
+        public static List<RoomTypeInfo> DisplayRoomTypeInfo()
+        {
+            List<RoomTypeInfo> roomtypes = new List<RoomTypeInfo>();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select room_type,room_price,room_url,room_explain,sum(room_condition) as room_workable from room natural join room_type group by room_type,room_price,room_url,room_explain";
+            OracleDataReader Ord = Search.ExecuteReader();
+            while (Ord.Read())
+            {
+                roomtypes.Add(new RoomTypeInfo { room_type = Ord.GetValue(0).ToString(), room_price = (int)Ord.GetValue(1), room_url = Ord.GetValue(2).ToString(), room_explain = Ord.GetValue(3).ToString(), room_workable = (int)Ord.GetValue(4) });
+            }
+            return roomtypes;
+        }
+
+        public static int AddRoomTypeInfo(int room_type, string room_url, string room_explain)
+        {
+            OracleCommand Insert = DB.CreateCommand();
+            Insert.CommandText = "insert into room_type values(:room_type,:room_url,:room_explain)";
+            Insert.Parameters.Add(new OracleParameter(":room_type", room_type));
+            Insert.Parameters.Add(new OracleParameter(":room_url", room_url));
+            Insert.Parameters.Add(new OracleParameter(":room_explain", room_explain));
+            int Result = Insert.ExecuteNonQuery();
+            return Result;
+        }
+
+        public static int DeleteRoomTypeInfo(int room_type)
+        {
+            OracleCommand Delete = DB.CreateCommand();
+            Delete.CommandText = "delete from room_type where room_type=:room_type";
+            Delete.Parameters.Add(new OracleParameter(":room_type", room_type));
+            int Result = Delete.ExecuteNonQuery();
+            return Result;
         }
     }
 }

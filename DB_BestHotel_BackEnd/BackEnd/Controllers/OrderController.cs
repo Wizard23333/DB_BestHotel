@@ -10,7 +10,7 @@ using BackEnd;
 
 namespace BackEnd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Order")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -41,7 +41,7 @@ namespace BackEnd.Controllers
         public ActionResult<Order> OrderQuery(string order_id)
         {
             DataAccess.CreateConn();
-            var order = DataAccess.Query(order_id);
+            var order = DataAccess.QueryOrderInfo(order_id);
             DataAccess.CloseConn();
             return order;
         }
@@ -55,7 +55,7 @@ namespace BackEnd.Controllers
         public bool OrderModify(string order_id)
         {
             DataAccess.CreateConn();
-            int Result = DataAccess.Modify(order_id);
+            int Result = DataAccess.ModifyOrderInfo(order_id);
             DataAccess.CloseConn();
             if (Result == 1)
                 return true;
@@ -75,11 +75,15 @@ namespace BackEnd.Controllers
             DataAccess.CloseConn();
         }
 
+
+        [HttpPost("DishReserve")]
+        [ApiResponseFilterAttribute]
         public void DishReserve(string user_id, string dish_name,  int number = 1)
         {
             DataAccess.CreateConn();
             DataAccess.AddDishOrder(user_id, dish_name, number);
             DataAccess.CloseConn();
+
         }
     }
 }

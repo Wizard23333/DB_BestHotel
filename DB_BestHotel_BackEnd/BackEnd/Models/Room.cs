@@ -15,4 +15,13 @@ namespace BackEnd.Models
         public string phone { get; set; }
         public string time { get; set; }
     }
+
+    public class RoomTypeInfo
+    {
+        public int room_price { get; set; }
+        public string room_type { get; set; }
+        public int room_workable { get; set; }
+        public string room_url { get; set; }
+        public string room_explain { get; set; }
+    }
 }
