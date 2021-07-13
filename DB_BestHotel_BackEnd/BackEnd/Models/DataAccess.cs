@@ -223,7 +223,7 @@ namespace BackEnd.Models
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {
-                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price =(decimal) Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = (int)Ord.GetValue(3), name = Ord.GetValue(4).ToString(),phone= Ord.GetValue(5).ToString() ,time= Ord.GetValue(6).ToString(), staff_id = Ord.GetValue(7).ToString() });
+                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price =(decimal) Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = Ord.GetValue(3).ToString(), name = Ord.GetValue(4).ToString(),phone= Ord.GetValue(5).ToString() ,time= Ord.GetValue(6).ToString(), staff_id = Ord.GetValue(7).ToString() });
             }
             return rooms;
         }
@@ -251,7 +251,7 @@ namespace BackEnd.Models
             return Result;
         }
 
-        public static int AddRoomInfo(int room_condition, int room_price, string room_type )
+        public static int AddRoomInfo(string room_condition, decimal room_price, string room_type )
         {
             OracleCommand Insert = DB.CreateCommand();
             Insert.CommandText = "insert into room output inserted.room_id values(sys_guid(),:room_price,:room_type,:room_condition)";
@@ -266,11 +266,17 @@ namespace BackEnd.Models
         {
             List<RoomTypeInfo> roomtypes = new List<RoomTypeInfo>();
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select room_type,room_price,room_url,room_explain,sum(room_condition) as room_workable from room natural join room_type group by room_type,room_price,room_url,room_explain";
+            Search.CommandText = "select room_type,room_price,room_url,room_explain from room natural join room_type where room_condition='空闲' group by room_type,room_price,room_url,room_explain  ";
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {
-                roomtypes.Add(new RoomTypeInfo { room_type = Ord.GetValue(0).ToString(), room_price = (int)Ord.GetValue(1), room_url = Ord.GetValue(2).ToString(), room_explain = Ord.GetValue(3).ToString(), room_workable = (int)Ord.GetValue(4) });
+                roomtypes.Add(new RoomTypeInfo { room_type = Ord.GetValue(0).ToString(), room_price = (decimal)Ord.GetValue(1), room_url = Ord.GetValue(2).ToString(), room_explain = Ord.GetValue(3).ToString(), room_workable = true });
+            }
+            Search.CommandText = "select room_type,room_price,room_url,room_explain from room natural join room_type except select room_type,room_price,room_url,room_explain from room natural join room_type where  room_condition='空闲' group by room_type,room_price,room_url,room_explain  ";
+            OracleDataReader Ord2 = Search.ExecuteReader();
+            while (Ord2.Read())
+            {
+                roomtypes.Add(new RoomTypeInfo { room_type = Ord.GetValue(0).ToString(), room_price = (decimal)Ord.GetValue(1), room_url = Ord.GetValue(2).ToString(), room_explain = Ord.GetValue(3).ToString(), room_workable = false });
             }
             return roomtypes;
         }
