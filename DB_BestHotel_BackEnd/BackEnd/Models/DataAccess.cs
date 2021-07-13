@@ -142,5 +142,41 @@ namespace BackEnd.Models
         }
 
 
+        public static void AddRoomOrder(string user_id, string order_date,string room_type,string client_telephonenumber=null,int stay_time=1)
+        {
+            OracleCommand Insert = DB.CreateCommand();
+            Insert.CommandText = "insert into room_order values(:user_id,:order_date,:room_type,:client_telephonenumber,:stay_time)";
+            Insert.Parameters.Add(new OracleParameter(":user_id", user_id));
+            Insert.Parameters.Add(new OracleParameter(":order_date", order_date));
+            Insert.Parameters.Add(new OracleParameter(":room_type", room_type));
+            Insert.Parameters.Add(new OracleParameter(":client_telephonenumber", client_telephonenumber));
+            Insert.Parameters.Add(new OracleParameter(":stay_time", stay_time));
+            Insert.ExecuteNonQuery();
+        }
+
+
+        public static void AddDishOrder(string user_id, string dish_name,  int number = 1)
+        {
+            OracleCommand Insert = DB.CreateCommand();
+            Insert.CommandText = "insert into dish_order values(:user_id,:dish_name,:number)";
+            Insert.Parameters.Add(new OracleParameter(":user_id", user_id));
+            Insert.Parameters.Add(new OracleParameter(":dish_name", dish_name));
+            Insert.Parameters.Add(new OracleParameter(":number", number));
+            Insert.ExecuteNonQuery();
+        }
+
+        public static List<Room> DisplayRoomInfo()
+        {
+            List<Room> rooms = new List<Room>();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select * from room left outer natural join check_in left outer natural join client";
+            OracleDataReader Ord = Search.ExecuteReader();
+            while (Ord.Read())
+            {
+                //待修改顺序
+                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price =(int) Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = Ord.GetValue(3).ToString(), name = Ord.GetValue(5).ToString(),phone= Ord.GetValue(5).ToString() ,time= Ord.GetValue(5).ToString() });
+            }
+            return rooms;
+        }
     }
 }

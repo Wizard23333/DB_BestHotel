@@ -26,6 +26,9 @@ namespace BackEnd.Controllers
             DataAccess.CreateConn();
             var OrderList = DataAccess.DisplayOrderInfo(query);        
             DataAccess.CloseConn();
+            /*List<Order> OrderList = new List<Order>();
+            OrderList.Add(new Order { order_date = "1" });
+            OrderList.Add(new Order { order_date = "1" });*/
             return OrderList;
         }
 
@@ -57,6 +60,26 @@ namespace BackEnd.Controllers
             if (Result == 1)
                 return true;
             else return false;
+        }
+
+        //Post /api/Order/RoomReserve
+        //修改数据库中对应order_id的订单信息
+
+        [HttpPost("RoomReserve")]
+        [ApiResponseFilterAttribute]
+
+        public void RoomReserve(string user_id, string order_date, string room_type, string client_telephonenumber = null, int stay_time = 1)
+        {
+            DataAccess.CreateConn();
+            DataAccess.AddRoomOrder(user_id, order_date, room_type, client_telephonenumber, stay_time);
+            DataAccess.CloseConn();
+        }
+
+        public void DishReserve(string user_id, string dish_name,  int number = 1)
+        {
+            DataAccess.CreateConn();
+            DataAccess.AddDishOrder(user_id, dish_name, number);
+            DataAccess.CloseConn();
         }
     }
 }
