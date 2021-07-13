@@ -9,9 +9,9 @@ namespace BackEnd.Models
     {
         public string room_id { get; set; }
         public string staff_id { get; set; }
-        public int room_price { get; set; }
+        public decimal room_price { get; set; }
         public string room_type { get; set; }
-        public string room_condition { get; set; }
+        public int room_condition { get; set; }
         public string name { get; set; }
         public string phone { get; set; }
         public string time { get; set; }

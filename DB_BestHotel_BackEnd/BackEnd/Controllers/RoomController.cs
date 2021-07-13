@@ -56,7 +56,7 @@ namespace BackEnd.Controllers
         [HttpPost("RoomAdd")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomAdd(string room_condition, int room_price, int room_type)//待修改
+        public StatusCodeResult RoomAdd(int room_condition, int room_price, int room_type)//待修改
         {
             DataAccess.CreateConn();
             int Result = DataAccess.AddRoomInfo(room_condition, room_price, room_type);

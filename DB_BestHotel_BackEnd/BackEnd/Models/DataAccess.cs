@@ -107,7 +107,7 @@ namespace BackEnd.Models
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {
-                orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), order_date = Ord.GetValue(3).ToString(), amount = (int)Ord.GetValue(4), state = (int)Ord.GetValue(5) });
+                orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), order_date = Ord.GetValue(3).ToString(), amount = (decimal)Ord.GetValue(4), state = (int)Ord.GetValue(5) });
             }
             return orders;
         }
@@ -135,8 +135,8 @@ namespace BackEnd.Models
                 order.order_id = Ord.GetValue(0).ToString();
                 order.client_id = Ord.GetValue(1).ToString();
                 order.order_date = Ord.GetValue(3).ToString();
-                order.amount = (int)Ord.GetValue(4);
-                order.state = (int)Ord.GetValue(5);
+                order.amount = (decimal)Ord.GetValue(4);
+                order.state = (Int16)Ord.GetValue(5);
                 
             }
             return order;
@@ -177,9 +177,9 @@ namespace BackEnd.Models
             OracleCommand Search = DB.CreateCommand();
             Search.CommandText = "select dish_id from dish where  dish_name=:dish_name";
             Search.Parameters.Add(new OracleParameter(":dish_name", dish_name));
-            string dish_id= (string)Search.ExecuteScalar();
+            int dish_id= (int)Search.ExecuteScalar();
             Search.CommandText = "select dish_price from dish where  dish_name=:dish_name";
-            int dish_price = (int)Search.ExecuteScalar();
+            Int64 dish_price = (Int64)Search.ExecuteScalar();
             OracleCommand Insert = DB.CreateCommand();
             Insert.CommandText = "insert into dish_order values(sys_guid(),:client_id,:dish_id,to_date(:dish_date,'YYYY-MM-DD'),:amount,'0',:number)";
             Insert.Parameters.Add(new OracleParameter(":client_id", client_id));
@@ -195,11 +195,11 @@ namespace BackEnd.Models
         {
             List<Room> rooms = new List<Room>();
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select room_id,room_price,room_type,room_condition,name,phone,time,staff_id from room natural join clean natural left outer join check_in natural left outer join client";
+            Search.CommandText = "select room_id,room_price,room_type,room_condition,client_name,client_telephonenumber,live_time,staff_id from room natural join clean natural left outer join check_in natural left outer join client";
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {
-                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price =(int) Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = Ord.GetValue(3).ToString(), name = Ord.GetValue(4).ToString(),phone= Ord.GetValue(5).ToString() ,time= Ord.GetValue(6).ToString(), staff_id = Ord.GetValue(7).ToString() });
+                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price =(decimal) Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = (int)Ord.GetValue(3), name = Ord.GetValue(4).ToString(),phone= Ord.GetValue(5).ToString() ,time= Ord.GetValue(6).ToString(), staff_id = Ord.GetValue(7).ToString() });
             }
             return rooms;
         }
@@ -227,7 +227,7 @@ namespace BackEnd.Models
             return Result;
         }
 
-        public static int AddRoomInfo(string room_condition, int room_price, int room_type )
+        public static int AddRoomInfo(int room_condition, int room_price, int room_type )
         {
             OracleCommand Insert = DB.CreateCommand();
             Insert.CommandText = "insert into room output inserted.room_id values(sys_guid(),:room_price,:room_type,:room_condition)";
