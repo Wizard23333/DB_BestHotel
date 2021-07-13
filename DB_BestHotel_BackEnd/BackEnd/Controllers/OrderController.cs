@@ -68,10 +68,10 @@ namespace BackEnd.Controllers
         [HttpPost("RoomReserve")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomReserve(string client_id, string order_date, string room_type, string client_telephonenumber = null, int stay_time = 1)
+        public StatusCodeResult RoomReserve(string client_id, string order_date, string room_type, int stay_time = 1, string client_telephonenumber = null)
         {
             DataAccess.CreateConn();
-            int Result = DataAccess.AddRoomOrder(client_id, order_date, room_type, client_telephonenumber, stay_time);
+            int Result = DataAccess.AddRoomOrder(client_id, order_date, room_type, stay_time, client_telephonenumber);
             DataAccess.CloseConn();
             if (Result == 1)
                 return new StatusCodeResult(200);
