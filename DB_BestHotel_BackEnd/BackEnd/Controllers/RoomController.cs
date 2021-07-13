@@ -28,7 +28,7 @@ namespace BackEnd.Controllers
         [HttpPost("RoomModify")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomModify(string room_id, int room_price, int room_type, string room_condition,string staff_id)
+        public StatusCodeResult RoomModify(string room_id, int room_price, string room_type, string room_condition,string staff_id)
         {
             DataAccess.CreateConn();
             int Result = DataAccess.ModifyRoomInfo(room_id, room_price, room_type, room_condition,staff_id);
@@ -56,7 +56,7 @@ namespace BackEnd.Controllers
         [HttpPost("RoomAdd")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomAdd(int room_condition, int room_price, int room_type)//待修改
+        public StatusCodeResult RoomAdd(int room_condition, int room_price, string room_type)//待修改
         {
             DataAccess.CreateConn();
             int Result = DataAccess.AddRoomInfo(room_condition, room_price, room_type);
@@ -83,7 +83,7 @@ namespace BackEnd.Controllers
         [HttpPost("RoomTypeAdd")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomTypeAdd(int room_type, string room_url, string room_explain)
+        public StatusCodeResult RoomTypeAdd(string room_type, string room_url, string room_explain)
         {
             DataAccess.CreateConn();
             int Result = DataAccess.AddRoomTypeInfo(room_type, room_url, room_explain);
@@ -97,7 +97,7 @@ namespace BackEnd.Controllers
         [HttpPost("RoomTypeDelete")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomTypeDelete(int room_type)
+        public StatusCodeResult RoomTypeDelete(string room_type)
         {
             DataAccess.CreateConn();
             int Result = DataAccess.DeleteRoomTypeInfo(room_type);

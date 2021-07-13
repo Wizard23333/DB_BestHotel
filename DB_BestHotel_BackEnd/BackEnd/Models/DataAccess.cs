@@ -176,17 +176,19 @@ namespace BackEnd.Models
                 Update.ExecuteNonQuery();
             }
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select * from room where room_condition='1' and room_type=:room_type";
+            Search.CommandText = "select room_id from room where room_condition='1' and room_type=:room_type";
             Search.Parameters.Add(new OracleParameter(":room_type", room_type));
-            Room available_room = (Room)Search.ExecuteScalar();
+            string room_id = (string)Search.ExecuteScalar();
+            Search.CommandText = "select room_price from room where room_condition='1' and room_type=:room_type";
+            decimal room_price = (decimal)Search.ExecuteScalar();
 
 
             OracleCommand Insert = DB.CreateCommand();
             Insert.CommandText = "insert into room_order values(sys_guid(),:client_id,:room_id,to_date(:order_date,'YYYY-MM-DD'),:amount,'0',:stay_time)";
             Insert.Parameters.Add(new OracleParameter(":client_id", client_id));
-            Insert.Parameters.Add(new OracleParameter(":room_id", available_room.room_id));
+            Insert.Parameters.Add(new OracleParameter(":room_id", room_id));
             Insert.Parameters.Add(new OracleParameter(":order_date", order_date));
-            Insert.Parameters.Add(new OracleParameter(":amount", available_room.room_price * stay_time));
+            Insert.Parameters.Add(new OracleParameter(":amount", room_price * stay_time));
             Insert.Parameters.Add(new OracleParameter(":stay_time", stay_time));
             int Result = Insert.ExecuteNonQuery();
             return Result;
@@ -227,7 +229,7 @@ namespace BackEnd.Models
         }
 
 
-        public static int ModifyRoomInfo(string room_id,int room_price,int room_type,string room_condition,string staff_id)
+        public static int ModifyRoomInfo(string room_id,int room_price,string room_type,string room_condition,string staff_id)
         {
             OracleCommand Update = DB.CreateCommand();
             Update.CommandText = "update room set room_id=:room_id,room_price=:room_price,room_type=:room_type,room_condition=:room_condition,staff_id=:staff_id  where room_id=:room_id";
@@ -249,7 +251,7 @@ namespace BackEnd.Models
             return Result;
         }
 
-        public static int AddRoomInfo(int room_condition, int room_price, int room_type )
+        public static int AddRoomInfo(int room_condition, int room_price, string room_type )
         {
             OracleCommand Insert = DB.CreateCommand();
             Insert.CommandText = "insert into room output inserted.room_id values(sys_guid(),:room_price,:room_type,:room_condition)";
@@ -273,7 +275,7 @@ namespace BackEnd.Models
             return roomtypes;
         }
 
-        public static int AddRoomTypeInfo(int room_type, string room_url, string room_explain)
+        public static int AddRoomTypeInfo(string room_type, string room_url, string room_explain)
         {
             OracleCommand Insert = DB.CreateCommand();
             Insert.CommandText = "insert into room_type values(:room_type,:room_url,:room_explain)";
@@ -284,7 +286,7 @@ namespace BackEnd.Models
             return Result;
         }
 
-        public static int DeleteRoomTypeInfo(int room_type)
+        public static int DeleteRoomTypeInfo(string room_type)
         {
             OracleCommand Delete = DB.CreateCommand();
             Delete.CommandText = "delete from room_type where room_type=:room_type";
