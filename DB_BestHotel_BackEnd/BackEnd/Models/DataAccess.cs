@@ -102,8 +102,8 @@ namespace BackEnd.Models
         {
             List<Order> orders = new List<Order>();
             OracleCommand Search = DB.CreateCommand();
-            string Strsql="select " + query + "from room_order";
-            Search.CommandText = Strsql;
+            Search.CommandText = "select :query from room_order";
+            Search.Parameters.Add(new OracleParameter(":query", query));
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {
@@ -149,8 +149,8 @@ namespace BackEnd.Models
             {
                 OracleCommand Update = DB.CreateCommand();
                 Update.CommandText = "update client set client_telephonenumber=:client_telephonenumber where client_id=:client_id";
-                Update.Parameters.Add(new OracleParameter(":client_id", client_id));
                 Update.Parameters.Add(new OracleParameter(":client_telephonenumber", client_telephonenumber));
+                Update.Parameters.Add(new OracleParameter(":client_id", client_id));
                 Update.ExecuteNonQuery();
             }
             OracleCommand Search = DB.CreateCommand();
@@ -162,10 +162,10 @@ namespace BackEnd.Models
             OracleCommand Insert = DB.CreateCommand();
             Insert.CommandText = "insert into room_order values(sys_guid(),:client_id,:room_id,to_date(:order_date,'YYYY-MM-DD'),:amount,'0',:stay_time)";
             Insert.Parameters.Add(new OracleParameter(":client_id", client_id));
-            Insert.Parameters.Add(new OracleParameter(":order_date", order_date));
             Insert.Parameters.Add(new OracleParameter(":room_id", available_room.room_id));
-            Insert.Parameters.Add(new OracleParameter(":stay_time", stay_time));
+            Insert.Parameters.Add(new OracleParameter(":order_date", order_date));
             Insert.Parameters.Add(new OracleParameter(":amount", available_room.room_price * stay_time));
+            Insert.Parameters.Add(new OracleParameter(":stay_time", stay_time));
             int Result = Insert.ExecuteNonQuery();
             return Result;
         }
@@ -185,8 +185,8 @@ namespace BackEnd.Models
             Insert.Parameters.Add(new OracleParameter(":client_id", client_id));
             Insert.Parameters.Add(new OracleParameter(":dish_id", dish_id));
             Insert.Parameters.Add(new OracleParameter(":dish_date", DateTime.Now.ToString()));
-            Insert.Parameters.Add(new OracleParameter(":number", number));
             Insert.Parameters.Add(new OracleParameter(":amount", number * dish_price));
+            Insert.Parameters.Add(new OracleParameter(":number", number));
             int Result = Insert.ExecuteNonQuery();
             return Result;
         }
