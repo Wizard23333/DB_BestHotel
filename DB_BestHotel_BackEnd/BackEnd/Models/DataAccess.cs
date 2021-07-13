@@ -143,52 +143,77 @@ namespace BackEnd.Models
         }
 
 
-        public static void AddRoomOrder(string user_id, string order_date,string room_type,string client_telephonenumber=null,int stay_time=1)
+        public static int AddRoomOrder(string client_id, string order_date, string room_type, string client_telephonenumber = null, int stay_time = 1)
         {
+            if(client_telephonenumber!=null)
+            {
+                OracleCommand Update = DB.CreateCommand();
+                Update.CommandText = "update client set client_telephonenumber=:client_telephonenumber where client_id=:client_id";
+                Update.Parameters.Add(new OracleParameter(":client_id", client_id));
+                Update.Parameters.Add(new OracleParameter(":client_telephonenumber", client_telephonenumber));
+                Update.ExecuteNonQuery();
+            }
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select * from room where room_condition='1' and room_type=:room_type";
+            Search.Parameters.Add(new OracleParameter(":room_type", room_type));
+            Room available_room = (Room)Search.ExecuteScalar();
+
+
             OracleCommand Insert = DB.CreateCommand();
-            Insert.CommandText = "insert into room_order values(:user_id,:order_date,:room_type,:client_telephonenumber,:stay_time)";
-            Insert.Parameters.Add(new OracleParameter(":user_id", user_id));
+            Insert.CommandText = "insert into room_order values(sys_guid(),:client_id,:room_id,to_date(:order_date,'YYYY-MM-DD'),:amount,'0',:stay_time)";
+            Insert.Parameters.Add(new OracleParameter(":client_id", client_id));
             Insert.Parameters.Add(new OracleParameter(":order_date", order_date));
-            Insert.Parameters.Add(new OracleParameter(":room_type", room_type));
-            Insert.Parameters.Add(new OracleParameter(":client_telephonenumber", client_telephonenumber));
+            Insert.Parameters.Add(new OracleParameter(":room_id", available_room.room_id));
             Insert.Parameters.Add(new OracleParameter(":stay_time", stay_time));
-            Insert.ExecuteNonQuery();
+            Insert.Parameters.Add(new OracleParameter(":amount", available_room.room_price * stay_time));
+            int Result = Insert.ExecuteNonQuery();
+            return Result;
         }
 
 
-        public static void AddDishOrder(string user_id, string dish_name,  int number = 1)
+        public static int AddDishOrder(string client_id, string dish_name,  int number = 1)
         {
+            
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select dish_id from dish where  dish_name=:dish_name";
+            Search.Parameters.Add(new OracleParameter(":dish_name", dish_name));
+            string dish_id= (string)Search.ExecuteScalar();
+            Search.CommandText = "select dish_price from dish where  dish_name=:dish_name";
+            int dish_price = (int)Search.ExecuteScalar();
             OracleCommand Insert = DB.CreateCommand();
-            Insert.CommandText = "insert into dish_order values(:user_id,:dish_name,:number)";
-            Insert.Parameters.Add(new OracleParameter(":user_id", user_id));
-            Insert.Parameters.Add(new OracleParameter(":dish_name", dish_name));
+            Insert.CommandText = "insert into dish_order values(sys_guid(),:client_id,:dish_id,to_date(:dish_date,'YYYY-MM-DD'),:amount,'0',:number)";
+            Insert.Parameters.Add(new OracleParameter(":client_id", client_id));
+            Insert.Parameters.Add(new OracleParameter(":dish_id", dish_id));
+            Insert.Parameters.Add(new OracleParameter(":dish_date", DateTime.Now.ToString()));
             Insert.Parameters.Add(new OracleParameter(":number", number));
-            Insert.ExecuteNonQuery();
+            Insert.Parameters.Add(new OracleParameter(":amount", number * dish_price));
+            int Result = Insert.ExecuteNonQuery();
+            return Result;
         }
 
         public static List<Room> DisplayRoomInfo()
         {
             List<Room> rooms = new List<Room>();
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select * from room left outer natural join check_in left outer natural join client";
+            Search.CommandText = "select room_id,room_price,room_type,room_condition,name,phone,time,staff_id from room natural join clean natural left outer join check_in natural left outer join client";
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {
-                //待修改顺序
-                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price =(int) Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = Ord.GetValue(3).ToString(), name = Ord.GetValue(5).ToString(),phone= Ord.GetValue(5).ToString() ,time= Ord.GetValue(5).ToString() });
+                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price =(int) Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = Ord.GetValue(3).ToString(), name = Ord.GetValue(4).ToString(),phone= Ord.GetValue(5).ToString() ,time= Ord.GetValue(6).ToString(), staff_id = Ord.GetValue(7).ToString() });
             }
             return rooms;
         }
 
 
-        public static int ModifyRoomInfo(string room_id,int room_price,int room_type,string room_condition)
+        public static int ModifyRoomInfo(string room_id,int room_price,int room_type,string room_condition,string staff_id)
         {
             OracleCommand Update = DB.CreateCommand();
-            Update.CommandText = "update room set room_id=:room_id,room_price=:room_price,room_type=:room_type,room_condition=:room_condition  where room_id=:room_id";
+            Update.CommandText = "update room set room_id=:room_id,room_price=:room_price,room_type=:room_type,room_condition=:room_condition,staff_id=:staff_id  where room_id=:room_id";
             Update.Parameters.Add(new OracleParameter(":room_id", room_id));
             Update.Parameters.Add(new OracleParameter(":room_price", room_price));
             Update.Parameters.Add(new OracleParameter(":room_type", room_type));
             Update.Parameters.Add(new OracleParameter(":room_condition", room_condition));
+            Update.Parameters.Add(new OracleParameter(":staff_id", staff_id));
             int Result = Update.ExecuteNonQuery();
             return Result;
         }

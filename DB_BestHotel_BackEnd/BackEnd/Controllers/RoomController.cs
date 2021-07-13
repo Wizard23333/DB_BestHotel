@@ -28,10 +28,10 @@ namespace BackEnd.Controllers
         [HttpPost("RoomModify")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomModify(string room_id, int room_price, int room_type, string room_condition)
+        public StatusCodeResult RoomModify(string room_id, int room_price, int room_type, string room_condition,string staff_id)
         {
             DataAccess.CreateConn();
-            int Result = DataAccess.ModifyRoomInfo(room_id, room_price, room_type, room_condition);
+            int Result = DataAccess.ModifyRoomInfo(room_id, room_price, room_type, room_condition,staff_id);
             DataAccess.CloseConn();
             if (Result == 1)
                 return new StatusCodeResult(200);

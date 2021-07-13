@@ -8,6 +8,7 @@ namespace BackEnd.Models
     public class Room
     {
         public string room_id { get; set; }
+        public string staff_id { get; set; }
         public int room_price { get; set; }
         public string room_type { get; set; }
         public string room_condition { get; set; }
