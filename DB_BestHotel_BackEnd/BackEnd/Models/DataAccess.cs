@@ -98,14 +98,20 @@ namespace BackEnd.Models
         }
 
         //查询数据库中所有订单信息
-        public static List<Order> DisplayOrderInfo(string query = "*")
+        public static ListInfo DisplayOrderListInfo(string query = "*")
         {
             List<Order> orders = new List<Order>();
             OracleCommand Search = DB.CreateCommand();
-            string Strsql="select "+query+" from room_order";
+            string Strsql;
+            if (query == "*")
+                Strsql = "select " + query + " from room_order";
+            else
+            {
+                Strsql = "select * from room_order where order_id like %" + query + "% or client_id like %" + query + "% or order_date like %" + query + "% or amount like %" + query + "% or state like %" + query + "% of room_id like %" + query + "%";
+            }
             Search.CommandText = Strsql;
             OracleDataReader Ord = Search.ExecuteReader();
-
+            
             while (Ord.Read())
             {
                 if (query == "*")
@@ -131,7 +137,9 @@ namespace BackEnd.Models
                     orders.Add(new Order { state = (Int16)Ord.GetValue(0) });
                 }
             }
-            return orders;
+            int total = orders.Count();
+            ListInfo list = new ListInfo { total = total, list = orders };
+            return list;
         }
 
         //修改订单信息

@@ -15,5 +15,9 @@ namespace BackEnd.Models
         
     }
 
-    
+    public class ListInfo
+    {
+        public int total { get; set; }
+        public List<Order> list { get; set; }
+    }
 }

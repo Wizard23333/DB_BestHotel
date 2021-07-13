@@ -16,20 +16,20 @@ namespace BackEnd.Controllers
     {
 
 
-        //Post /api/Order/OrderInfo
+        //Post /api/Order/OrderListInfo
         //返回数据库中所有的订单信息
 
-        [HttpPost("OrderInfo")]
+        [HttpPost("OrderListInfo")]
         [ApiResponseFilterAttribute]
-        public List<Order> OrderInfo(string query = "*")
+        public ListInfo OrderListInfo(string query = "*")
         {
             DataAccess.CreateConn();
-            var OrderList = DataAccess.DisplayOrderInfo(query);        
+            var list = DataAccess.DisplayOrderListInfo(query);        
             DataAccess.CloseConn();
             /*List<Order> OrderList = new List<Order>();
             OrderList.Add(new Order { order_date = "1" });
             OrderList.Add(new Order { order_date = "1" });*/
-            return OrderList;
+            return list;
         }
 
         //Post /api/Order/OrderQuery
