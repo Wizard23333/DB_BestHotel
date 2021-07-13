@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tan\\Desktop\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj": {}
+    "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tan\\Desktop\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj": {
+    "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tan\\Desktop\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
+        "projectUniqueName": "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
         "projectName": "BackEnd",
-        "projectPath": "C:\\Users\\tan\\Desktop\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
+        "projectPath": "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\BackEnd.csproj",
         "packagesPath": "C:\\Users\\tan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tan\\Desktop\\DB_BestHotel_BackEnd\\BackEnd\\obj\\",
+        "outputPath": "C:\\learn\\DB_BestHotel_Frontend\\DB_BestHotel_BackEnd\\BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tan\\AppData\\Roaming\\NuGet\\NuGet.Config",
