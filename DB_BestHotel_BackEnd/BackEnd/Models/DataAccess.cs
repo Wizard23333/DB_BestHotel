@@ -102,12 +102,34 @@ namespace BackEnd.Models
         {
             List<Order> orders = new List<Order>();
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select :query from room_order";
-            Search.Parameters.Add(new OracleParameter(":query", query));
+            string Strsql="select "+query+" from room_order";
+            Search.CommandText = Strsql;
             OracleDataReader Ord = Search.ExecuteReader();
+
             while (Ord.Read())
             {
-                orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), order_date = Ord.GetValue(3).ToString(), amount = (decimal)Ord.GetValue(4), state = (int)Ord.GetValue(5) });
+                if (query == "*")
+                    orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), order_date = Ord.GetValue(3).ToString(), amount = (decimal)Ord.GetValue(4), state = (Int16)Ord.GetValue(5) });
+                else if (query == "order_id")
+                {
+                    orders.Add(new Order { order_id = Ord.GetValue(0).ToString() });
+                }
+                else if (query == "client_id")
+                {
+                    orders.Add(new Order { client_id = Ord.GetValue(0).ToString() });
+                }
+                else if (query == "order_date")
+                {
+                    orders.Add(new Order { order_date = Ord.GetValue(0).ToString() });
+                }
+                else if (query == "amount")
+                {
+                    orders.Add(new Order { amount = (decimal)Ord.GetValue(0) });
+                }
+                else if (query == "state")
+                {
+                    orders.Add(new Order { state = (Int16)Ord.GetValue(0) });
+                }
             }
             return orders;
         }
