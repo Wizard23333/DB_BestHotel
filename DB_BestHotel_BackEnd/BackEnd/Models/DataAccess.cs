@@ -155,7 +155,7 @@ namespace BackEnd.Models
             CloseConn();
             return a;
         }
-        //查找所有客户信息
+        //查找客户信息
         public static List<Client> FindClientInfo()
         {
             CreateConn();
@@ -172,8 +172,6 @@ namespace BackEnd.Models
             }
             return a;
         }
-
-        //查客户信息
         public static Client FindClientInfo(string client_id)
         {
             CreateConn();
@@ -193,8 +191,6 @@ namespace BackEnd.Models
             }
             return a;
         }
-
-        //修改用户密码
         public static bool AlterUserPassword(string id, string password)
         {
             CreateConn();
@@ -209,7 +205,6 @@ namespace BackEnd.Models
             else
                 return true;
         }
-        //修改客户信息
         public static bool AlterClient(string id,string phone)
         {
             CreateConn();
@@ -223,112 +218,7 @@ namespace BackEnd.Models
                 return false;
             else
                 return true;
-        }
-        public static string FindFacilityState(string facilty_id, string room_id)
-        {
-            CreateConn();
-            OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select FACILITY_CONDITION from ROOM_FACILITY_CONDITION where FACILITY_ID=:facilty_id and ROOM_ID=:room_id";
-            Search.Parameters.Add(new OracleParameter(":facilty_id", facilty_id));
-            Search.Parameters.Add(new OracleParameter(":room_id", room_id));
-            OracleDataReader Ord = Search.ExecuteReader();
-            string a="";
-            while (Ord.Read())
-            {
-                a = Ord.GetValue(0).ToString();
-            }
-            return a;
-        }
-        public static List<FaciltyStaffResponse> FindFacilityStaff(string facility_id)
-        {
-            CreateConn();
-            OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select staff_id from repair where facility_id=:facility_id";
-            Search.Parameters.Add(new OracleParameter(":facilty_id", facility_id));
-            OracleDataReader Ord = Search.ExecuteReader();
-            List<FaciltyStaffResponse> a = new List<FaciltyStaffResponse>();
-            while (Ord.Read())
-            {
-                a.Add(new FaciltyStaffResponse { staff_id = Ord.GetValue(0).ToString()});
-            }
-            return a;
-        }
-        public static List<StaffFaciltyResponse> FindStaffFacility(string staff_id)
-        {
-            CreateConn();
-            OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select facility_id from repair where staff_id=:staff_id";
-            Search.Parameters.Add(new OracleParameter(":staff_id", staff_id));
-            OracleDataReader Ord = Search.ExecuteReader();
-            List<StaffFaciltyResponse> a = new List<StaffFaciltyResponse>();
-            while (Ord.Read())
-            {
-                a.Add(new StaffFaciltyResponse { facility_id = Ord.GetValue(0).ToString() });
-            }
-            return a;
-        }
-        //查所有监控信息
-        public static List<MonitorRequest> FindMonitorInfo()
-        {
-            CreateConn();
-            OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select CAMERA_ID,ROOM_ID from monitoring_facilities_room group by CAMERA_ID,ROOM_ID";
-            OracleDataReader Ord = Search.ExecuteReader();
-            List<MonitorRequest> a = new List<MonitorRequest>();
-            while (Ord.Read())
-            {
-                int count = a.Count();
-                if ((count != 0) && (Ord.GetValue(0).ToString() == a[count - 1].monitor_id))
-                {
-                    a[count - 1].rooms.Add(new MonitorRoom { room_id = Ord.GetValue(1).ToString() });
-                }
-                else
-                {
-                    List<MonitorRoom> b = new List<MonitorRoom>();
-                    for (int i = 1; i < Ord.FieldCount; i++)
-                        b.Add(new MonitorRoom { room_id = Ord.GetValue(i).ToString() });
-                    a.Add(new MonitorRequest { monitor_id = Ord.GetValue(0).ToString(), rooms = b });
-                }
-            }
-            return a;
-        }
 
-        //修改监控信息
-        public static bool DelMonitor(MonitorRequest value)
-        {
-            CreateConn();
-            OracleCommand CMD = DB.CreateCommand();
-            CMD.CommandText = "delete from monitoring_facilities_room where CAMERA_ID=:camera_id";
-            CMD.Parameters.Add(new OracleParameter(":camera_id", value.monitor_id));
-            OracleDataReader Ord = CMD.ExecuteReader();
-            int Result = CMD.ExecuteNonQuery();
-            CloseConn();
-            if (Result <0)
-                return false;
-            else
-                return true;
-        }
-        public static bool AddMonitor(MonitorRequest value)
-        {
-            CreateConn();
-            int Result = 0;
-            int Count = value.rooms.Count();
-            for (int i = 0; i < Count; i++)
-            {
-                OracleCommand CMD = DB.CreateCommand();
-                CMD.CommandText = "insert into monitoring_facilities_room values(:room_id,:camera_id)";
-                CMD.Parameters.Add(new OracleParameter(":room_id", value.rooms[i].room_id));
-                CMD.Parameters.Add(new OracleParameter(":camera_id", value.monitor_id));
-                OracleDataReader Ord = CMD.ExecuteReader();
-                Result += CMD.ExecuteNonQuery();
-            }
-            CloseConn();
-            if (Result <= 0)
-                return false;
-            else
-                return true;
         }
     }
-
-    
 }
