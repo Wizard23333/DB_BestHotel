@@ -266,13 +266,13 @@ namespace BackEnd.Models
         {
             List<RoomTypeInfo> roomtypes = new List<RoomTypeInfo>();
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select room_type,room_price,room_url,room_explain from room natural join room_type where room_condition='空闲' group by room_type,room_price,room_url,room_explain  ";
+            Search.CommandText = "select room_type,room_price,room_url,room_explain from room natural join room_type where room_condition='空闲' ";
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {
                 roomtypes.Add(new RoomTypeInfo { room_type = Ord.GetValue(0).ToString(), room_price = (decimal)Ord.GetValue(1), room_url = Ord.GetValue(2).ToString(), room_explain = Ord.GetValue(3).ToString(), room_workable = true });
             }
-            Search.CommandText = "select room_type,room_price,room_url,room_explain from room natural join room_type except select room_type,room_price,room_url,room_explain from room natural join room_type where  room_condition='空闲' group by room_type,room_price,room_url,room_explain  ";
+            Search.CommandText = "select room_type,room_price,room_url,room_explain from room natural join room_type except select room_type,room_price,room_url,room_explain from room natural join room_type where  room_condition='空闲'  ";
             OracleDataReader Ord2 = Search.ExecuteReader();
             while (Ord2.Read())
             {
