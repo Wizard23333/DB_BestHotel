@@ -28,42 +28,42 @@ namespace BackEnd.Controllers
         [HttpPost("RoomModify")]
         [ApiResponseFilterAttribute]
 
-        public bool RoomModify(string room_id, int room_price, int room_type, string room_condition)
+        public StatusCodeResult RoomModify(string room_id, int room_price, int room_type, string room_condition)
         {
             DataAccess.CreateConn();
             int Result = DataAccess.ModifyRoomInfo(room_id, room_price, room_type, room_condition);
             DataAccess.CloseConn();
             if (Result == 1)
-                return true;
-            else return false;
+                return new StatusCodeResult(200);
+            else return new StatusCodeResult(404);
         }
 
 
         [HttpPost("RoomDelete")]
         [ApiResponseFilterAttribute]
 
-        public bool RoomDelete(string room_id)
+        public StatusCodeResult RoomDelete(string room_id)
         {
             DataAccess.CreateConn();
             int Result = DataAccess.DeleteRoomInfo(room_id);
             DataAccess.CloseConn();
             if (Result == 1)
-                return true;
-            else return false;
+                return new StatusCodeResult(200);
+            else return new StatusCodeResult(404);
         }
 
 
         [HttpPost("RoomAdd")]
         [ApiResponseFilterAttribute]
 
-        public bool RoomAdd(string room_condition, int room_price, int room_type)//待修改
+        public StatusCodeResult RoomAdd(string room_condition, int room_price, int room_type)//待修改
         {
             DataAccess.CreateConn();
             int Result = DataAccess.AddRoomInfo(room_condition, room_price, room_type);
             DataAccess.CloseConn();
             if (Result == 1)
-                return true;
-            else return false;
+                return new StatusCodeResult(200);
+            else return new StatusCodeResult(404);
         }
 
 
@@ -83,28 +83,28 @@ namespace BackEnd.Controllers
         [HttpPost("RoomTypeAdd")]
         [ApiResponseFilterAttribute]
 
-        public bool RoomTypeAdd(int room_type, string room_url, string room_explain)
+        public StatusCodeResult RoomTypeAdd(int room_type, string room_url, string room_explain)
         {
             DataAccess.CreateConn();
             int Result = DataAccess.AddRoomTypeInfo(room_type, room_url, room_explain);
             DataAccess.CloseConn();
             if (Result == 1)
-                return true;
-            else return false;
+                return new StatusCodeResult(200);
+            else return new StatusCodeResult(404);
         }
 
 
         [HttpPost("RoomTypeDelete")]
         [ApiResponseFilterAttribute]
 
-        public bool RoomTypeDelete(int room_type)
+        public StatusCodeResult RoomTypeDelete(int room_type)
         {
             DataAccess.CreateConn();
             int Result = DataAccess.DeleteRoomTypeInfo(room_type);
             DataAccess.CloseConn();
             if (Result == 1)
-                return true;
-            else return false;
+                return new StatusCodeResult(200);
+            else return new StatusCodeResult(404);
         }
     }
 }

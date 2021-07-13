@@ -52,14 +52,14 @@ namespace BackEnd.Controllers
         [HttpPost("OrderModify")]
         [ApiResponseFilterAttribute]
 
-        public bool OrderModify(string order_id)
+        public StatusCodeResult OrderModify(string order_id)
         {
             DataAccess.CreateConn();
             int Result = DataAccess.ModifyOrderInfo(order_id);
             DataAccess.CloseConn();
             if (Result == 1)
-                return true;
-            else return false;
+                return new StatusCodeResult(200);
+            else return new StatusCodeResult(404);
         }
 
         //Post /api/Order/RoomReserve

@@ -98,11 +98,12 @@ namespace BackEnd.Models
         }
 
         //查询数据库中所有订单信息
-        public static List<Order> DisplayOrderInfo(string query)
+        public static List<Order> DisplayOrderInfo(string query = "*")
         {
             List<Order> orders = new List<Order>();
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select " + query + "from room_order";
+            string Strsql="select " + query + "from room_order";
+            Search.CommandText = Strsql;
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {
