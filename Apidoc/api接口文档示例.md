@@ -357,8 +357,8 @@ room参数（有入住人时，返回相应信息，无则空）
 | ------------- | ------------------ | -------- | ----------------------- |
 | room_type     | 房间类型           | 数值     | 不能为空                |
 | room_price    | 房间价格           | 数值     | 不能为空                |
-| room_workable | 此房间类型是否空余 | bool     | true为空余，false为已满 |
-| room_picture  | 房间图片           | url      | 不能为空                |
+| room_workable | 此房间类型空余数   | 数值     |                        |
+| room_url  | 房间图片           | url      | 不能为空                |
 | room_explain  | 房间文案           | 字符串   | 不能为空                |
 
 | 参数名         | 参数说明            | 参数类型 | 备注 |
@@ -371,14 +371,14 @@ room参数（有入住人时，返回相应信息，无则空）
 { 				
   room_type: "单人间",
   room_price: "150",
-  room_workable: true,
+  room_workable: 2,
   room_picture: "url",
   room_explain: "卸下工作的一身疲惫,让身体陶醉于轻松的呵护,放飞心情,细细体会释放的雅趣这里,是一处静谧的港湾;这里,时间也放慢了脚步",
 },
 {
   room_type: "双人间",
   room_price: "200",
-  room_workable: true,
+  room_workable: 3,
   room_picture: "url",
   room_explain: "自然主义的规划设计, 庄重典雅的格式布局, 在现代与古典之间, 建构绵延不息的辉煌",
 }]
