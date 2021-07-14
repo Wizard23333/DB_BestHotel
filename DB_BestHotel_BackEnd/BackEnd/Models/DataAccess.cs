@@ -155,7 +155,7 @@ namespace BackEnd.Models
             CloseConn();
             return a;
         }
-        //查找客户信息
+        //查找所有客户信息
         public static List<Client> FindClientInfo()
         {
             CreateConn();
@@ -172,6 +172,8 @@ namespace BackEnd.Models
             }
             return a;
         }
+
+        //查客户信息
         public static Client FindClientInfo(string client_id)
         {
             CreateConn();
@@ -191,6 +193,8 @@ namespace BackEnd.Models
             }
             return a;
         }
+
+        //修改用户密码
         public static bool AlterUserPassword(string id, string password)
         {
             CreateConn();
@@ -205,6 +209,7 @@ namespace BackEnd.Models
             else
                 return true;
         }
+        //修改客户信息
         public static bool AlterClient(string id,string phone)
         {
             CreateConn();
@@ -218,7 +223,379 @@ namespace BackEnd.Models
                 return false;
             else
                 return true;
+        }
+        public static string FindFacilityStatus(string facilty_id, string room_id)
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select FACILITY_CONDITION from ROOM_FACILITY_CONDITION where FACILITY_ID=:facilty_id and ROOM_ID=:room_id";
+            Search.Parameters.Add(new OracleParameter(":facilty_id", facilty_id));
+            Search.Parameters.Add(new OracleParameter(":room_id", room_id));
+            OracleDataReader Ord = Search.ExecuteReader();
+            string a="";
+            while (Ord.Read())
+            {
+                a = Ord.GetValue(0).ToString();
+            }
+            return a;
+        }
+        public static List<FaciltyStaffResponse> FindFacilityStaff(string facility_id)
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select staff_id from repair where facility_id=:facility_id";
+            Search.Parameters.Add(new OracleParameter(":facilty_id", facility_id));
+            OracleDataReader Ord = Search.ExecuteReader();
+            List<FaciltyStaffResponse> a = new List<FaciltyStaffResponse>();
+            while (Ord.Read())
+            {
+                a.Add(new FaciltyStaffResponse { staff_id = Ord.GetValue(0).ToString()});
+            }
+            return a;
+        }
+        public static List<StaffFaciltyResponse> FindStaffFacility(string staff_id)
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select facility_id from repair where staff_id=:staff_id";
+            Search.Parameters.Add(new OracleParameter(":staff_id", staff_id));
+            OracleDataReader Ord = Search.ExecuteReader();
+            List<StaffFaciltyResponse> a = new List<StaffFaciltyResponse>();
+            while (Ord.Read())
+            {
+                a.Add(new StaffFaciltyResponse { facility_id = Ord.GetValue(0).ToString() });
+            }
+            return a;
+        }
+        public static List<FaciltyListResponse> FindFacilityInfo()
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select * from facility NATURAL JOIN repair NATURAL JOIN room_facility_condition";
+            //Search.Parameters.Add(new OracleParameter(":staff_id", staff_id));
+            OracleDataReader Ord = Search.ExecuteReader();
+            List<FaciltyListResponse> a = new List<FaciltyListResponse>();
+            while (Ord.Read())
+            {
+                int pos=a.FindIndex(o => ((FaciltyListResponse)o).facility_id == Ord["FACILITY_ID"].ToString());
+                if(pos<0)
+                    a.Add(new FaciltyListResponse { facility_id = Ord["FACILITY_ID"].ToString(),facility_name=Ord["FACILITY_NAME"].ToString(),staff_id= Ord["STAFF_ID"].ToString(), children= new List<MonitorRoom>() { new MonitorRoom() { room_id= Ord["ROOM_ID"].ToString() } } });
+                else
+                    a[pos].children.Add(new MonitorRoom() { room_id = Ord["ROOM_ID"].ToString() });
+            }  
+            return a;
+        }
+        //查所有监控信息
+        public static List<MonitorRequest> FindMonitorInfo()
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select CAMERA_ID,ROOM_ID from monitoring_facilities_room group by CAMERA_ID,ROOM_ID";
+            OracleDataReader Ord = Search.ExecuteReader();
+            List<MonitorRequest> a = new List<MonitorRequest>();
+            while (Ord.Read())
+            {
+                int pos = a.FindIndex(o => ((MonitorRequest)o).monitor_id == Ord["CAMERA_ID"].ToString());
+                if (pos < 0)
+                    a.Add(new MonitorRequest { monitor_id = Ord["CAMERA_ID"].ToString(), rooms = new List<MonitorRoom>() { new MonitorRoom() { room_id = Ord["ROOM_ID"].ToString() } } });
+                else
+                    a[pos].rooms.Add(new MonitorRoom() { room_id = Ord["ROOM_ID"].ToString() });
+            }
+            return a;
+        }
 
+        //删除监控信息
+        public static bool DelMonitor(MonitorRequest value)
+        {
+            CreateConn();
+            OracleCommand CMD = DB.CreateCommand();
+            CMD.CommandText = "delete from monitoring_facilities_room where CAMERA_ID=:camera_id";
+            CMD.Parameters.Add(new OracleParameter(":camera_id", value.monitor_id));
+            int Result = CMD.ExecuteNonQuery();
+            CloseConn();
+            if (Result <0)
+                return false;
+            else
+                return true;
+        }
+        public static bool AddMonitor(MonitorRequest value)
+        {
+            CreateConn();
+            int Result = 0;
+            int Count = value.rooms.Count();
+            for (int i = 0; i < Count; i++)
+            {
+                OracleCommand CMD = DB.CreateCommand();
+                CMD.CommandText = "insert into monitoring_facilities_room values(:room_id,:camera_id)";
+                CMD.Parameters.Add(new OracleParameter(":room_id", value.rooms[i].room_id));
+                CMD.Parameters.Add(new OracleParameter(":camera_id", value.monitor_id));
+                Result += CMD.ExecuteNonQuery();
+            }
+            CloseConn();
+            if (Result <= 0)
+                return false;
+            else
+                return true;
+        }
+        public static List<ParkingMsg> ShowParkingInfo()
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select * from Parking";
+            OracleDataReader Ord = Search.ExecuteReader();
+            List<ParkingMsg> a = new List<ParkingMsg>();
+            while (Ord.Read())
+            {
+                a.Add(new ParkingMsg { parking_lot_id = Ord["PARKING_LOT_ID"].ToString(), user_id = Ord["USER_ID"].ToString(), car_number = Ord["CAR_NUMBER"].ToString() });
+            }
+            CloseConn();
+            return a;
+        }
+        public static bool AlertParking(ParkingMsg value)
+        {
+            CreateConn();
+            OracleCommand Update = DB.CreateCommand();
+            Update.CommandText = "update PARKING set user_id=:user_id,car_number=:car_number where parking_lot_id=:parking_lot_id";
+            Update.Parameters.Add(new OracleParameter(":user_id", value.user_id));
+            Update.Parameters.Add(new OracleParameter(":car_number", value.car_number));
+            Update.Parameters.Add(new OracleParameter(":parking_lot_id", value.parking_lot_id));
+            int Result = Update.ExecuteNonQuery();
+            CloseConn();
+            if (Result < 0)
+                return false;
+            else
+                return true;
+
+        }
+        public static bool AddParking(string parking_lot_id)
+        {
+            CreateConn();
+            OracleCommand CMD = DB.CreateCommand();
+            CMD.CommandText = "insert into PARKING values(:parking_lot_id,:user_id,:car_number)";
+            CMD.Parameters.Add(new OracleParameter(":parking_lot_id", parking_lot_id));
+            CMD.Parameters.Add(new OracleParameter(":user_id", null));
+            CMD.Parameters.Add(new OracleParameter(":car_number", null));
+            int Result = CMD.ExecuteNonQuery();
+            CloseConn();
+            if (Result !=1)
+                return false;
+            else
+                return true;
+
+        }
+        public static bool DelParking(string parking_lot_id)
+        {
+            CreateConn();
+            OracleCommand CMD = DB.CreateCommand();
+            CMD.CommandText = "delete from PARKING where PARKING_LOT_ID=:parking_lot_id";
+            CMD.Parameters.Add(new OracleParameter(":parking_lot_id", parking_lot_id));
+            int Result = CMD.ExecuteNonQuery();
+            CloseConn();
+            if (Result < 0)
+                return false;
+            else
+                return true;
+
+        }
+        public static ParkingMsg FindParkingInfo(string park_id)
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select * from Parking where PARKING_LOT_ID=:park_id";
+            Search.Parameters.Add(new OracleParameter(":park_id", park_id));
+            OracleDataReader Ord = Search.ExecuteReader();
+            ParkingMsg a = new ParkingMsg();
+            while (Ord.Read())
+            {
+                a.parking_lot_id = Ord["PARKING_LOT_ID"].ToString();
+                a.user_id = Ord["USER_ID"].ToString();
+                a.car_number = Ord["CAR_NUMBER"].ToString();
+            }
+            CloseConn();
+            return a;
+        }
+        //给定staff_id，查找是否存在此id 存在返回true 不存在返回false
+        public static bool IsStaffExist(string staff_id)
+        {
+            int Count;
+            CreateConn();
+            OracleCommand CMD = DB.CreateCommand();
+            CMD.CommandText = "select count(*) from STAFF where staff_id=:staff_id";
+            CMD.Parameters.Add(new OracleParameter(":staff_id", staff_id));
+            Count = Convert.ToInt32(CMD.ExecuteScalar());
+            CloseConn();
+            if (Count == 0)
+                return false;
+            else
+                return true;
+
+        }
+        //给定staff_id，返回这个id对应的员工的所有信息
+        public static Staff FindStaffInfo(string staff_id)
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select * from STAFF where staff_id=:staff_id";
+            Search.Parameters.Add(new OracleParameter(":staff_id", staff_id));
+            OracleDataReader Ord = Search.ExecuteReader();
+            Staff b = new Staff();
+            while (Ord.Read())
+            {
+                b.staff_id = Ord.GetValue(0).ToString();
+                b.staff_name = Ord.GetValue(1).ToString();
+                b.staff_sex = Ord.GetValue(2).ToString();
+                b.staff_age = Ord.GetValue(3).ToString();
+                b.staff_identity_card_number = Ord.GetValue(4).ToString();
+                b.staff_address = Ord.GetValue(5).ToString();
+                b.staff_department = Ord.GetValue(6).ToString();
+                b.staff_position = Ord.GetValue(7).ToString();
+                b.staff_entry_date = Ord.GetValue(8).ToString();
+                b.staff_salary = Ord.GetValue(9).ToString();
+            }
+            CloseConn();
+            return b;
+        }
+        //给定职员id，返回上司id
+        public static string FindUperId(string staff_id)
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select leader_id from LEADER where staff_id=:staff_id";
+            Search.Parameters.Add(new OracleParameter(":staff_id", staff_id));
+            OracleDataReader Ord = Search.ExecuteReader();
+            string c = "";
+            while (Ord.Read())
+            {
+                c = Ord.GetValue(0).ToString();
+
+            }
+            CloseConn();
+            return c;
+        }
+        //给定职员id 删除此id对应的员工信息
+        public static string DeleteStaff(string staff_id)
+        {
+            CreateConn();
+            OracleCommand Delete_Clean = DB.CreateCommand();
+            Delete_Clean.CommandText = "delete from CLEAN where staff_id=:staff_id";
+            Delete_Clean.Parameters.Add(new OracleParameter(":staff_id", staff_id));
+
+            OracleCommand Delete = DB.CreateCommand();
+            Delete.CommandText = "delete from STAFF where staff_id=:staff_id";
+            Delete.Parameters.Add(new OracleParameter(":staff_id", staff_id));
+            int Result = Delete.ExecuteNonQuery();
+            CloseConn();
+            if (Result == 1)
+            {
+                return staff_id;
+            }
+            else
+            {
+                return "0";
+            }
+        }
+        //给定新的员工属性，更新对应id的员工属性和leader，成功返回true 不成功返回false
+        public static bool StaffUpdate(StaffUpdateRequest value)
+        {
+            CreateConn();
+            OracleCommand Update = DB.CreateCommand();
+            Update.CommandText = "update STAFF set staff_id=:staff_id ,staff_name=:staff_name ,staff_sex=:staff_sex ,staff_age=:staff_age ,staff_identity_card_number=:staff_identity_card_number ,staff_address=:staff_address ,staff_department=:staff_department ,staff_position=:staff_position ,staff_entry_date=:staff_entry_date ,staff_salary=:staff_salary where staff_id=:staff_id";
+            Update.Parameters.Add(new OracleParameter(":staff_id", value.staff_id));
+            Update.Parameters.Add(new OracleParameter(":staff_name", value.staff_name));
+            Update.Parameters.Add(new OracleParameter(":staff_sex", value.staff_sex));
+            Update.Parameters.Add(new OracleParameter(":staff_age", value.staff_age));
+            Update.Parameters.Add(new OracleParameter(":staff_identity_card_number", value.staff_identity_card_number));
+            Update.Parameters.Add(new OracleParameter(":staff_address", value.staff_address));
+            Update.Parameters.Add(new OracleParameter(":staff_department", value.staff_department));
+            Update.Parameters.Add(new OracleParameter(":staff_position", value.staff_position));
+            Update.Parameters.Add(new OracleParameter(":staff_entry_date", value.staff_entry_date));
+            Update.Parameters.Add(new OracleParameter(":staff_salary", value.staff_salary));
+            Update.Parameters.Add(new OracleParameter(":staff_id", value.staff_id));
+            OracleCommand Update_Leader = DB.CreateCommand();
+            Update_Leader.CommandText = "update LEADER set leader_id=:leader_id where staff_id=:staff_id";
+            Update_Leader.Parameters.Add(new OracleParameter(":staff_id", value.staff_id));
+            Update_Leader.Parameters.Add(new OracleParameter(":leader_id", value.leader_id));
+            int Result = Update.ExecuteNonQuery();
+            CloseConn();
+            if (Result == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        //
+        public static List<ReturnAllResponse> ReturnAll()
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select * from STAFF";
+            OracleDataReader Ord = Search.ExecuteReader();
+            List<ReturnAllResponse> a = new List<ReturnAllResponse>();
+
+
+            int i = 0;
+            OracleCommand Search_leader_id = DB.CreateCommand();
+            Search_leader_id.CommandText = "select leader_id from LEADER where staff_id=:staff_id";
+            while (Ord.Read())
+            {
+                a.Add(new ReturnAllResponse { staff_id = Ord.GetValue(0).ToString(), staff_name = Ord.GetValue(1).ToString(), staff_sex = Ord.GetValue(2).ToString(), staff_age = Ord.GetValue(3).ToString(), staff_identity_card_number = Ord.GetValue(4).ToString(), staff_address = Ord.GetValue(5).ToString(), staff_department = Ord.GetValue(6).ToString(), staff_position = Ord.GetValue(7).ToString(), staff_entry_date = Ord.GetValue(8).ToString(), staff_salary = Ord.GetValue(9).ToString() });
+
+                Search_leader_id.Parameters.Add(new OracleParameter(":staff_id", a[i].staff_id));
+                OracleDataReader Ord1 = Search_leader_id.ExecuteReader();
+                while (Ord1.Read()) { a[i].leader_id = Ord.GetValue(0).ToString(); }
+                i++;
+            }
+            CloseConn();
+            return a;
+        }
+        //添加新员工
+        public static string StaffAdd(StaffAddRequest value)
+        {
+            CreateConn();
+            User data1 = new User { user_id = value.staff_id, user_name = value.staff_name, user_password = "88888888", user_type = "2", security_q = "我是谁", s_q_answer = value.staff_name };
+            AddUser(data1);
+            OracleCommand Add = DB.CreateCommand();
+            Add.CommandText = "insert into STAFF value(:staff_id ,:staff_name ,:staff_sex ,:staff_age ,:staff_identity_card_number ,:staff_address ,:staff_department ,:staff_position ,:staff_entry_date ,:staff_salary)";
+            Add.Parameters.Add(new OracleParameter(":staff_id", value.staff_id));
+            Add.Parameters.Add(new OracleParameter(":staff_name", value.staff_name));
+            Add.Parameters.Add(new OracleParameter(":staff_sex", value.staff_sex));
+            Add.Parameters.Add(new OracleParameter(":staff_age", value.staff_age));
+            Add.Parameters.Add(new OracleParameter(":staff_identity_card_number", value.staff_identity_card_number));
+            Add.Parameters.Add(new OracleParameter(":staff_address", value.staff_address));
+            Add.Parameters.Add(new OracleParameter(":staff_department", value.staff_department));
+            Add.Parameters.Add(new OracleParameter(":staff_position", value.staff_position));
+            Add.Parameters.Add(new OracleParameter(":staff_entry_date", value.staff_entry_date));
+            Add.Parameters.Add(new OracleParameter(":staff_salary", value.staff_salary));
+            OracleCommand Add_Leader = DB.CreateCommand();
+            Add_Leader.CommandText = "insert into LEADER value(:staff_id,:leader_id)";
+            Add_Leader.Parameters.Add(new OracleParameter(":staff_id", value.staff_id));
+            Add_Leader.Parameters.Add(new OracleParameter(":leader_id", value.leader_id));
+            int Result = Add.ExecuteNonQuery();
+            CloseConn();
+            if (Result == 1)
+            {
+                return value.staff_id;
+            }
+            else return "0";
+        }
+        //判断dish_id存不存在
+        public static bool IsDishExist(string dish_id)
+        {
+            int Count;
+            CreateConn();
+            OracleCommand CMD = DB.CreateCommand();
+            CMD.CommandText = "select count(*) from DISH where dish_id=:dish_id";
+            CMD.Parameters.Add(new OracleParameter(":dish_id", dish_id));
+            Count = Convert.ToInt32(CMD.ExecuteScalar());
+            CloseConn();
+            if (Count == 0)
+                return false;
+            else
+                return true;
         }
 
         //查询数据库中所有订单信息
@@ -231,35 +608,15 @@ namespace BackEnd.Models
                 Strsql = "select " + query + " from room_order";
             else
             {
-                Strsql = "select * from room_order where order_id like %" + query + "% or client_id like %" + query + "% or order_date like %" + query + "% or amount like %" + query + "% or state like %" + query + "% of room_id like %" + query + "%";
+                Strsql = "select * from room_order where order_id like '%" + query + "%' or client_id like '%" + query + "%' or order_date like '%" + query + "%' or amount like '%" + query + "%' or state like '%" + query + "%' or room_id like '%" + query + "%'";
             }
             Search.CommandText = Strsql;
             OracleDataReader Ord = Search.ExecuteReader();
 
             while (Ord.Read())
-            {
-                if (query == "*")
+            { 
                     orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), order_date = Ord.GetValue(3).ToString(), amount = (decimal)Ord.GetValue(4), state = (Int16)Ord.GetValue(5) });
-                else if (query == "order_id")
-                {
-                    orders.Add(new Order { order_id = Ord.GetValue(0).ToString() });
-                }
-                else if (query == "client_id")
-                {
-                    orders.Add(new Order { client_id = Ord.GetValue(0).ToString() });
-                }
-                else if (query == "order_date")
-                {
-                    orders.Add(new Order { order_date = Ord.GetValue(0).ToString() });
-                }
-                else if (query == "amount")
-                {
-                    orders.Add(new Order { amount = (decimal)Ord.GetValue(0) });
-                }
-                else if (query == "state")
-                {
-                    orders.Add(new Order { state = (Int16)Ord.GetValue(0) });
-                }
+                
             }
             int total = orders.Count();
             ListInfo list = new ListInfo { total = total, list = orders };
@@ -325,8 +682,21 @@ namespace BackEnd.Models
             int Result = Insert.ExecuteNonQuery();
             return Result;
         }
+        
 
 
+        public static List<Room> DisplayRoomInfo()
+        {
+            List<Room> rooms = new List<Room>();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select room_id,room_price,room_type,room_condition,client_name,client_telephonenumber,live_time,staff_id from room natural join clean natural left outer join check_in natural left outer join client";
+            OracleDataReader Ord = Search.ExecuteReader();
+            while (Ord.Read())
+            {
+                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price = (decimal)Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = Ord.GetValue(3).ToString(), name = Ord.GetValue(4).ToString(), phone = Ord.GetValue(5).ToString(), time = Ord.GetValue(6).ToString(), staff_id = Ord.GetValue(7).ToString() });
+            }
+            return rooms;
+        }
         public static int AddDishOrder(string client_id, string dish_name, int number = 1)
         {
 
@@ -346,20 +716,6 @@ namespace BackEnd.Models
             int Result = Insert.ExecuteNonQuery();
             return Result;
         }
-
-        public static List<Room> DisplayRoomInfo()
-        {
-            List<Room> rooms = new List<Room>();
-            OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select room_id,room_price,room_type,room_condition,client_name,client_telephonenumber,live_time,staff_id from room natural join clean natural left outer join check_in natural left outer join client";
-            OracleDataReader Ord = Search.ExecuteReader();
-            while (Ord.Read())
-            {
-                rooms.Add(new Room { room_id = Ord.GetValue(0).ToString(), room_price = (decimal)Ord.GetValue(1), room_type = Ord.GetValue(2).ToString(), room_condition = Ord.GetValue(3).ToString(), name = Ord.GetValue(4).ToString(), phone = Ord.GetValue(5).ToString(), time = Ord.GetValue(6).ToString(), staff_id = Ord.GetValue(7).ToString() });
-            }
-            return rooms;
-        }
-
 
         public static int ModifyRoomInfo(string room_id, int room_price, string room_type, string room_condition, string staff_id)
         {
@@ -386,7 +742,7 @@ namespace BackEnd.Models
         public static int AddRoomInfo(string room_condition, decimal room_price, string room_type)
         {
             OracleCommand Insert = DB.CreateCommand();
-            Insert.CommandText = "insert into room output inserted.room_id values(sys_guid(),:room_price,:room_type,:room_condition)";
+            Insert.CommandText = "insert into room values(sys_guid(),:room_price,:room_type,:room_condition)";
             Insert.Parameters.Add(new OracleParameter(":room_price", room_price));
             Insert.Parameters.Add(new OracleParameter(":room_type", room_type));
             Insert.Parameters.Add(new OracleParameter(":room_condition", room_condition));
@@ -426,6 +782,83 @@ namespace BackEnd.Models
             int Result = Delete.ExecuteNonQuery();
             return Result;
         }
-    }
-}
+       
+        //更新菜品
+        public static bool UpdateDish(DishUpdateRequest value)
+        {
 
+            CreateConn();
+            OracleCommand Update = DB.CreateCommand();
+            Update.CommandText = "update DISH set dish_id=:dish_id ,dish_name=:dish_name ,dish_explain=:dish_explain ,dish_price=:dish_price where dish_id=:dish_id";
+            Update.Parameters.Add(new OracleParameter(":dish_id", value.dish_id));
+            Update.Parameters.Add(new OracleParameter(":dish_name", value.dish_name));
+            Update.Parameters.Add(new OracleParameter(":dish_explain", value.dish_explain));
+            Update.Parameters.Add(new OracleParameter(":dish_price", value.dish_price));
+            Update.Parameters.Add(new OracleParameter(":dish_id", value.dish_id));
+            int Result = Update.ExecuteNonQuery();
+            CloseConn();
+            if (Result == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static List<DishInfo> ReturnAll_Dish()
+        {
+            CreateConn();
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select * from DISH";
+            OracleDataReader Ord = Search.ExecuteReader();
+            List<DishInfo> a = new List<DishInfo>();
+            while (Ord.Read())
+            {
+                a.Add(new DishInfo { dish_id = Ord.GetValue(0).ToString(), dish_explain = Ord.GetValue(1).ToString(), dish_price = Ord.GetValue(2).ToString(), dish_name = Ord.GetValue(3).ToString() });
+            }
+            CloseConn();
+            return a;
+        }
+        public static string DeleteDish(string dish_id)
+        {
+            CreateConn();
+            OracleCommand Delete = DB.CreateCommand();
+            Delete.CommandText = "delete from DISH where dish_id=:dish_id";
+            Delete.Parameters.Add(new OracleParameter(":dish_id", dish_id));
+
+
+            int Result = Delete.ExecuteNonQuery();
+            CloseConn();
+            if (Result == 1)
+            {
+                return dish_id;
+            }
+            else
+            {
+                return "0";
+            }
+        }
+        public static string DishAdd(DishAddRequest value)
+        {
+            CreateConn();
+            OracleCommand Add = DB.CreateCommand();
+            Add.CommandText = "insert into DISH value(:dish_id,:dish_explain,:dish_price,:dish_name,:dish_picture)";
+            Add.Parameters.Add(new OracleParameter(":dish_id", value.dish_id));
+            Add.Parameters.Add(new OracleParameter(":dish_explain", value.dish_explain));
+            Add.Parameters.Add(new OracleParameter(":dish_price", value.dish_price));
+            Add.Parameters.Add(new OracleParameter(":dish_name", value.dish_name));
+            Add.Parameters.Add(new OracleParameter(":dish_picture", value.dish_picture));
+            int Result = Add.ExecuteNonQuery();
+            CloseConn();
+            if (Result == 1)
+            {
+                return value.dish_id;
+            }
+            else return "0";
+        }
+    
+    }
+
+    
+}

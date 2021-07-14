@@ -9,42 +9,24 @@ using BackEnd;
 namespace BackEnd.Controllers
 {
     [ApiController]
-    public class FacilityController : ControllerBase
+    public class ParkingController : ControllerBase
     {
-        private readonly ILogger<FacilityController> _logger;
+        private readonly ILogger<ParkingController> _logger;
 
-        public FacilityController(ILogger<FacilityController> logger)
+        public ParkingController(ILogger<ParkingController> logger)
         {
             _logger = logger;
         }
         [HttpGet]
         [Route("api/[controller]")]
         [ApiResponseFilterAttribute]
-        public List<FaciltyListResponse> Get1()
+        public ShowParkingResponse Get()
         {
             try
             {
-                var data = DataAccess.FindFacilityInfo();
-                return data;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            return null;
-        }
-        [HttpPost]
-        [Route("api/Status/[controller]")]
-        [ApiResponseFilterAttribute]
-        public FaciltyStateResponse Post([FromBody] FaciltyStateRequest value)
-        {
-            try
-            {
-                var state = DataAccess.FindFacilityStatus(value.facility_id,value.room_id);
-                if (state=="0")
-                    return new FaciltyStateResponse { facility_condition = false };
-                else if (state == "1")
-                    return new FaciltyStateResponse { facility_condition = true };
+                var date = DataAccess.ShowParkingInfo();
+                return new ShowParkingResponse { total = date.Count(), msg = date };
+
             }
             catch (Exception ex)
             {
@@ -55,12 +37,48 @@ namespace BackEnd.Controllers
         [HttpPost]
         [Route("api/[controller]/Alert")]
         [ApiResponseFilterAttribute]
-        public StatusCodeResult Post([FromBody] FaciltyListResponse value)
+        public StatusCodeResult Post([FromBody] ParkingMsg value)
         {
             try
             {
-                //var date = DataAccess.AlertFacilty(value);
-                //if (date == true)
+                var date = DataAccess.AlertParking(value);
+                if (date == true)
+                    return new StatusCodeResult(200);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new StatusCodeResult(501);
+        }
+        [HttpPost]
+        [Route("api/[controller]/Add")]
+        [ApiResponseFilterAttribute]
+        public StatusCodeResult AddParkingID([FromBody] ParkingIdRequest value)
+        {
+            try
+            {
+                var date = DataAccess.AddParking(value.parking_lot_id);
+                if (date == true)
+                    return new StatusCodeResult(200);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new StatusCodeResult(501);
+        }
+        [HttpPost]
+        [Route("api/[controller]/Del")]
+        [ApiResponseFilterAttribute]
+        public StatusCodeResult DelParkingID([FromBody] ParkingIdRequest value)
+        {
+            try
+            {
+                var date = DataAccess.DelParking(value.parking_lot_id);
+                if (date == true)
                     return new StatusCodeResult(200);
 
             }
@@ -71,37 +89,21 @@ namespace BackEnd.Controllers
             return new StatusCodeResult(501);
         }
         [HttpGet]
-        [Route("api/[controller]/Facility/{facility_id}")]
+        [Route("api/[controller]/Find/{parking_lot_id}")]
         [ApiResponseFilterAttribute]
-        public List<FaciltyStaffResponse> Get(string facility_id)
+        public ParkingMsg Get1(string parking_lot_id)
         {
             try
             {
-                var data = DataAccess.FindFacilityStaff(facility_id);
-                return data;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            return null;
-        }
-        [HttpGet]
-        [Route("api/[controller]/Staff/{staff_id}")]
-        [ApiResponseFilterAttribute]
-        public List<StaffFaciltyResponse> Gett(string staff_id)
-        {
-            try
-            {
-                var data = DataAccess.FindStaffFacility(staff_id);
-                return data;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            return null;
-        }
+                var date = DataAccess.FindParkingInfo(parking_lot_id);
+                return date;
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return null;
+        }
     }
 }
