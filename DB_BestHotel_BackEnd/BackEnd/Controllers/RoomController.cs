@@ -56,14 +56,12 @@ namespace BackEnd.Controllers
         [HttpPost("RoomAdd")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomAdd(string room_condition, decimal room_price, string room_type)//待修改
+        public string RoomAdd(string room_condition, decimal room_price, string room_type)
         {
             DataAccess.CreateConn();
-            int Result = DataAccess.AddRoomInfo(room_condition, room_price, room_type);
+            string Result = DataAccess.AddRoomInfo(room_condition, room_price, room_type);
             DataAccess.CloseConn();
-            if (Result == 1)
-                return new StatusCodeResult(200);
-            else return new StatusCodeResult(404);
+            return Result;
         }
 
 
@@ -74,9 +72,6 @@ namespace BackEnd.Controllers
             DataAccess.CreateConn();
             var RoomTypeInfoList = DataAccess.DisplayRoomTypeInfo();
             DataAccess.CloseConn();
-            /*List<Order> OrderList = new List<Order>();
-            OrderList.Add(new Order { order_date = "1" });
-            OrderList.Add(new Order { order_date = "1" });*/
             return RoomTypeInfoList;
         }
 

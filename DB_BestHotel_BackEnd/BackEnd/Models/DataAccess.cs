@@ -679,7 +679,7 @@ namespace BackEnd.Models
         }
 
 
-        public static int AddRoomOrder(string client_id, string order_date, string room_type, int stay_time = 1, string client_telephonenumber = null)
+        public static string AddRoomOrder(string client_id, string order_date, string room_type, int stay_time = 1, string client_telephonenumber = null)
         {
             if (client_telephonenumber != null)
             {
@@ -698,14 +698,18 @@ namespace BackEnd.Models
 
 
             OracleCommand Insert = DB.CreateCommand();
-            Insert.CommandText = "insert into room_order values(sys_guid(),:client_id,:room_id,to_date(:order_date,'YYYY-MM-DD'),:amount,'0',:stay_time)";
+            Insert.CommandText = "insert into room_order values(null,:client_id,:room_id,to_date(:order_date,'YYYY-MM-DD'),:amount,'0',:stay_time)";
             Insert.Parameters.Add(new OracleParameter(":client_id", client_id));
             Insert.Parameters.Add(new OracleParameter(":room_id", room_id));
             Insert.Parameters.Add(new OracleParameter(":order_date", order_date));
             Insert.Parameters.Add(new OracleParameter(":amount", room_price * stay_time));
             Insert.Parameters.Add(new OracleParameter(":stay_time", stay_time));
             int Result = Insert.ExecuteNonQuery();
-            return Result;
+            Search.CommandText = "select reg_form.currval from dual";
+            string order_id = Search.ExecuteReader().ToString();
+            if (Result == 1)
+                return order_id;
+            else return null;
         }
         
 
@@ -722,7 +726,7 @@ namespace BackEnd.Models
             }
             return rooms;
         }
-        public static int AddDishOrder(string client_id, string dish_name, int number = 1)
+        public static string AddDishOrder(string client_id, string dish_name, int number = 1)
         {
 
             OracleCommand Search = DB.CreateCommand();
@@ -732,14 +736,18 @@ namespace BackEnd.Models
             Search.CommandText = "select dish_price from dish where  dish_name=:dish_name";
             Int64 dish_price = (Int64)Search.ExecuteScalar();
             OracleCommand Insert = DB.CreateCommand();
-            Insert.CommandText = "insert into dish_order values(sys_guid(),:client_id,:dish_id,to_date(:dish_date,'YYYY-MM-DD'),:amount,'0',:number)";
+            Insert.CommandText = "insert into dish_order values(null,:client_id,:dish_id,to_date(:dish_date,'YYYY-MM-DD'),:amount,'0',:number)";
             Insert.Parameters.Add(new OracleParameter(":client_id", client_id));
             Insert.Parameters.Add(new OracleParameter(":dish_id", dish_id));
             Insert.Parameters.Add(new OracleParameter(":dish_date", DateTime.Now.ToString()));
             Insert.Parameters.Add(new OracleParameter(":amount", number * dish_price));
             Insert.Parameters.Add(new OracleParameter(":number", number));
             int Result = Insert.ExecuteNonQuery();
-            return Result;
+            Search.CommandText = "select reg_form.currval from dual";
+            string order_id = Search.ExecuteReader().ToString();
+            if (Result == 1)
+                return order_id;
+            else return null;
         }
 
         public static int ModifyRoomInfo(string room_id, int room_price, string room_type, string room_condition, string staff_id)
@@ -764,15 +772,20 @@ namespace BackEnd.Models
             return Result;
         }
 
-        public static int AddRoomInfo(string room_condition, decimal room_price, string room_type)
+        public static string AddRoomInfo(string room_condition, decimal room_price, string room_type)
         {
             OracleCommand Insert = DB.CreateCommand();
-            Insert.CommandText = "insert into room values(sys_guid(),:room_price,:room_type,:room_condition)";
+            Insert.CommandText = "insert into room values(null,:room_price,:room_type,:room_condition)";
             Insert.Parameters.Add(new OracleParameter(":room_price", room_price));
             Insert.Parameters.Add(new OracleParameter(":room_type", room_type));
             Insert.Parameters.Add(new OracleParameter(":room_condition", room_condition));
             int Result = Insert.ExecuteNonQuery();
-            return Result;
+            OracleCommand Search = DB.CreateCommand();
+            Search.CommandText = "select reg_form.currval from dual";
+            string room_id = Search.ExecuteReader().ToString();
+            if (Result == 1)
+                return room_id;
+            else return null;
         }
 
         public static List<RoomTypeInfo> DisplayRoomTypeInfo()

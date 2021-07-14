@@ -75,27 +75,23 @@ namespace BackEnd.Controllers
         [HttpPost("RoomReserve")]
         [ApiResponseFilterAttribute]
 
-        public StatusCodeResult RoomReserve(string client_id, string order_date, string room_type, int stay_time = 1, string client_telephonenumber = null)
+        public string RoomReserve(string client_id, string order_date, string room_type, int stay_time = 1, string client_telephonenumber = null)
         {
             DataAccess.CreateConn();
-            int Result = DataAccess.AddRoomOrder(client_id, order_date, room_type, stay_time, client_telephonenumber);
+            string Result = DataAccess.AddRoomOrder(client_id, order_date, room_type, stay_time, client_telephonenumber);
             DataAccess.CloseConn();
-            if (Result == 1)
-                return new StatusCodeResult(200);
-            else return new StatusCodeResult(404);
+            return Result;
         }
 
 
         [HttpPost("DishReserve")]
         [ApiResponseFilterAttribute]
-        public StatusCodeResult DishReserve(string client_id, string dish_name,  int number = 1)
+        public string DishReserve(string client_id, string dish_name,  int number = 1)
         {
             DataAccess.CreateConn();
-            int Result = DataAccess.AddDishOrder(client_id, dish_name, number);
+            string Result = DataAccess.AddDishOrder(client_id, dish_name, number);
             DataAccess.CloseConn();
-            if (Result == 1)
-                return new StatusCodeResult(200);
-            else return new StatusCodeResult(404);
+            return Result;
 
         }
     }
