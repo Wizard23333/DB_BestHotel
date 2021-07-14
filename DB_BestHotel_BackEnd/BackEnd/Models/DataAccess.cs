@@ -598,25 +598,50 @@ namespace BackEnd.Models
                 return true;
         }
 
-        //查询数据库中所有订单信息
-        public static ListInfo DisplayOrderListInfo(string query = "*")
+        //返回房间订单列表
+        public static ListInfo DisplayRoomOrderListInfo(string query = "*")
         {
             List<Order> orders = new List<Order>();
             OracleCommand Search = DB.CreateCommand();
             string Strsql;
-            if (query == "*")
-                Strsql = "select " + query + " from room_order";
+            if (query == "" || query == "*")
+                Strsql = "select order_id,client_id,order_date,amount,state,client_name,client_telephonenumber,client_identity_card_number,room_id,room_type,stay_time from room_order natural join client natural join room";
             else
             {
-                Strsql = "select * from room_order where order_id like '%" + query + "%' or client_id like '%" + query + "%' or order_date like '%" + query + "%' or amount like '%" + query + "%' or state like '%" + query + "%' or room_id like '%" + query + "%'";
+                Strsql = "select order_id,client_id,order_date,amount,state,client_name,client_telephonenumber,client_identity_card_number,room_id,room_type,stay_time from room_order natural join client natural join room where order_id like '%" + query + "%' or client_id like '%" + query + "%' or order_date like '%" + query + "%' or amount like '%" + query + "%' or state like '%" + query + "%' or room_id like '%" + query + "%' or client_name like '%" + query + "%' or client_telephonenumber like '%" + query + "%' or client_identity_card_number like '%" + query + "%' or room_type like '%" + query + "%' or stay_time like '%" + query + "%'";
             }
             Search.CommandText = Strsql;
             OracleDataReader Ord = Search.ExecuteReader();
 
             while (Ord.Read())
-            { 
-                    orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), order_date = Ord.GetValue(3).ToString(), amount = (decimal)Ord.GetValue(4), state = (Int16)Ord.GetValue(5) });
+            {
+                orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), room_order_date = Ord.GetValue(2).ToString(), amount = (decimal)Ord.GetValue(3), state = (Int16)Ord.GetValue(4), client_name = Ord.GetValue(5).ToString(), client_telephonenumber = Ord.GetValue(6).ToString(), client_identity_card_number = Ord.GetValue(7).ToString(), room_id = Ord.GetValue(8).ToString(), room_type = Ord.GetValue(9).ToString(), stay_time = (Int16)Ord.GetValue(10) });
                 
+            }
+            int total = orders.Count();
+            ListInfo list = new ListInfo { total = total, list = orders };
+            return list;
+        }
+
+        //返回菜品订单列表
+        public static ListInfo DisplayDishOrderListInfo(string query = "*")
+        {
+            List<Order> orders = new List<Order>();
+            OracleCommand Search = DB.CreateCommand();
+            string Strsql;
+            if (query == ""||query=="*")
+                Strsql = "select order_id,client_id,order_date,amount,state,client_name,client_telephonenumber,dish_name from dish_order natural join client natural join dish";
+            else
+            {
+                Strsql = "select order_id,client_id,order_date,amount,state,client_name,client_telephonenumber,dish_name from dish_order natural join client natural join dish where order_id like '%" + query + "%' or client_id like '%" + query + "%' or order_date like '%" + query + "%' or amount like '%" + query + "%' or state like '%" + query + "%' or dish_name like '%" + query + "%' or client_telephonenumber like '%" + query + "%' or client_name like '%" + query + "%'";
+            }
+            Search.CommandText = Strsql;
+            OracleDataReader Ord = Search.ExecuteReader();
+
+            while (Ord.Read())
+            {
+                orders.Add(new Order { order_id = Ord.GetValue(0).ToString(), client_id = Ord.GetValue(1).ToString(), dish_order_date = Ord.GetValue(2).ToString(), amount = (decimal)Ord.GetValue(3), state = (Int16)Ord.GetValue(4), client_name = Ord.GetValue(5).ToString(), client_telephonenumber = Ord.GetValue(6).ToString(), dish_name = Ord.GetValue(7).ToString() });
+
             }
             int total = orders.Count();
             ListInfo list = new ListInfo { total = total, list = orders };
@@ -645,7 +670,7 @@ namespace BackEnd.Models
             {
                 order.order_id = Ord.GetValue(0).ToString();
                 order.client_id = Ord.GetValue(1).ToString();
-                order.order_date = Ord.GetValue(3).ToString();
+                order.room_order_date = Ord.GetValue(3).ToString();
                 order.amount = (decimal)Ord.GetValue(4);
                 order.state = (Int16)Ord.GetValue(5);
 
@@ -754,7 +779,7 @@ namespace BackEnd.Models
         {
             List<RoomTypeInfo> roomtypes = new List<RoomTypeInfo>();
             OracleCommand Search = DB.CreateCommand();
-            Search.CommandText = "select room_type,room_price,room_url,room_explain,count(*) from room natural join room_type where room_condition='空闲' group by room_type,room_price,room_url,room_explain";
+            Search.CommandText = "select room_type,room_price,room_url,room_explain,count(*) from room natural full outer join room_type where room_condition='空闲' group by room_type,room_price,room_url,room_explain";
             OracleDataReader Ord = Search.ExecuteReader();
             while (Ord.Read())
             {

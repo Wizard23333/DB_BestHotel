@@ -19,16 +19,23 @@ namespace BackEnd.Controllers
         //Post /api/Order/OrderListInfo
         //返回数据库中所有的订单信息
 
-        [HttpPost("OrderListInfo")]
+        [HttpPost("RoomOrderListInfo")]
         [ApiResponseFilterAttribute]
-        public ListInfo OrderListInfo(string query = "*")
+        public ListInfo RoomOrderListInfo(string query = "*")
         {
             DataAccess.CreateConn();
-            var list = DataAccess.DisplayOrderListInfo(query);        
+            var list = DataAccess.DisplayRoomOrderListInfo(query);        
             DataAccess.CloseConn();
-            /*List<Order> OrderList = new List<Order>();
-            OrderList.Add(new Order { order_date = "1" });
-            OrderList.Add(new Order { order_date = "1" });*/
+            return list;
+        }
+
+        [HttpPost("DishOrderListInfo")]
+        [ApiResponseFilterAttribute]
+        public ListInfo DishOrderListInfo(string query = "*")
+        {
+            DataAccess.CreateConn();
+            var list = DataAccess.DisplayDishOrderListInfo(query);
+            DataAccess.CloseConn();
             return list;
         }
 
