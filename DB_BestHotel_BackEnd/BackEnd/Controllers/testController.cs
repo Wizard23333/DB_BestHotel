@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BackEnd.Models;
 using BackEnd;
+using Microsoft.AspNetCore.Http;
+
 namespace BackEnd.Controllers
 {
     [ApiController]
@@ -21,13 +23,15 @@ namespace BackEnd.Controllers
         [HttpGet]
         [ApiResponseFilterAttribute]
         public StatusCodeResult Get()
-        { 
+        {
+            HttpContext.Session.SetString("username", "12345");
             return new StatusCodeResult(402);
         }
         [HttpPost]
         [ApiResponseFilterAttribute]
-        public IEnumerable<User> Post()
+        public IEnumerable<UserModel> Post()
         {
+            string username = HttpContext.Session.GetString("username");
             DataAccess.CreateConn();
             var ID = DataAccess.test();
             DataAccess.CloseConn();

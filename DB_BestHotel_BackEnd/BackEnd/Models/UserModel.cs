@@ -5,7 +5,7 @@ using System.Web;
 
 namespace BackEnd.Models
 {
-    public class User
+    public class UserModel
     {
         public virtual string user_id { get; set; }
         public virtual string user_name { get; set; }

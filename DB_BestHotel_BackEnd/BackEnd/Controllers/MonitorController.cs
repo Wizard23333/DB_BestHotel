@@ -11,25 +11,25 @@ using Microsoft.AspNetCore.Http;
 namespace BackEnd.Controllers
 {
     [ApiController]
-    public class ClientController : ControllerBase
+    public class MonitorController : ControllerBase
     {
-        private readonly ILogger<ClientController> _logger;
+        private readonly ILogger<MonitorController> _logger;
 
-        public ClientController(ILogger<ClientController> logger)
+        public MonitorController(ILogger<MonitorController> logger)
         {
             _logger = logger;
         }
-        //获取所有客户信息
+        //获取所有监控信息
         [HttpGet]
         [Route("api/[controller]")]
         [ApiResponseFilterAttribute]
-        public List<Client> GetAllClient()
+        public List<MonitorRequest> GetMonitor()
         {
             if (HttpContext.Session.GetString("IsLogin") != "OK")
                 return null;
             try
             {
-                var data = DataAccess.FindClientInfo();
+                var data = DataAccess.FindMonitorInfo();
                 return data;
             }
             catch (Exception ex)
@@ -38,42 +38,39 @@ namespace BackEnd.Controllers
             }
             return null;
         }
-        //获取某客户信息
-        [HttpGet]
-        [Route("api/[controller]/{id}")]
-        [ApiResponseFilterAttribute]
-        public Client GetClient(string id)
-        {
-            if (HttpContext.Session.GetString("IsLogin") != "OK")
-                return null;
-            try
-            {
-                var data = DataAccess.FindClientInfo(id);
-                return data;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            return null;
-        }
-        //修改客户信息
+        //删除监控设备
         [HttpPost]
-        [Route("api/[controller]")]
+        [Route("api/[controller]/Del")]
         [ApiResponseFilterAttribute]
-        public AlterClientResponse AlterClient([FromBody] AlterClientResponse value)
+        public StatusCodeResult DelMonitor([FromBody] MonitorRequest value)
         {
             try
             {
-                if(DataAccess.AlterClient(value.client_id,value.client_mobile)==true)
-                    return new AlterClientResponse{ client_id= value.client_id, client_mobile= value.client_mobile };
+                if (DataAccess.DelMonitor(value)==true)
+                    return new StatusCodeResult(200);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
-            return null;
+            return new StatusCodeResult(501); 
         }
-
+        //添加监控设备
+        [HttpPost]
+        [Route("api/[controller]/Add")]
+        [ApiResponseFilterAttribute]
+        public StatusCodeResult AddMonitor([FromBody] MonitorRequest value)
+        {
+            try
+            {
+                if (DataAccess.AddMonitor(value) == true)
+                    return new StatusCodeResult(200);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return new StatusCodeResult(501);
+        }
     }
 }
