@@ -1,0 +1,46 @@
+html,body,#app{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.el-breadcrumb{
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+.el-card{
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15)!important;
+}
+.el-pagination{
+    margin-top: 15px;
+}
+.el-table{
+    margin-top:15px;
+    font-size:15px;
+}
+
+#nowweek{
+    margin-left: 980px ;
+    
+    color:rgb(202, 68, 68);
+    font-size:40px;
+    width: 300px;
+    height:50px;
+}
+#nowdate{
+    margin-left: 680px ;
+    margin-top:0px;
+    color:white;
+    font-size:20px;
+    width: 300px;
+    height:50px;
+}
+#nowtime{
+    margin-left: 720px ;
+    color:white;
+    font-size:20px;
+    width: 300px;
+    height:100px;
+}
+/* .el-button{
+    margin-top:100px
+} */
