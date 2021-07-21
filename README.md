@@ -6,7 +6,7 @@
 
 - 访问https://nodejs.org/en/下载最新版NodeJS环境即可(选择左侧14.17.0 LTS即可)
 
-<img src="D:\Projects\DB_BestHotel\README.assets\image-20210721221034226.png" alt="image-20210721221034226" style="zoom:50%;" />
+<img src="./README.assets/image-20210721221034226.png" alt="image-20210721221034226" style="zoom:50%;" />
 
 ​	安装过程推荐自行搜索，太复杂的安装过程请慎重选择
 
