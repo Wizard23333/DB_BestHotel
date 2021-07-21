@@ -41,7 +41,7 @@
       
     >
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px">
-  <el-form-item label="用户名">
+  <el-form-item label="用户ID">
     <el-input v-model="editForm.client_id" disabled></el-input>
   </el-form-item> 
   <el-form-item label="手机号" prop="client_mobile">

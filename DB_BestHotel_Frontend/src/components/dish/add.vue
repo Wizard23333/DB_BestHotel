@@ -45,7 +45,7 @@
           
           <el-tab-pane label="菜品图片url" name="2">
              <el-form-item label="菜品图片url" prop="dish_url">
-              <el-input v-model="addForm.dish_url" type="number"></el-input>
+              <el-input v-model="addForm.dish_url" ></el-input>
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="菜品文案" name="3">

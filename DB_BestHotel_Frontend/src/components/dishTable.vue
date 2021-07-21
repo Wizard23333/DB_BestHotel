@@ -25,7 +25,7 @@
         
         <el-table-column label="订单日期" prop="dish_order_date"></el-table-column>
         <el-table-column label="交易金额" prop="amount"></el-table-column>
-        <el-table-column label="订单状态" prop="state">
+        <!-- <el-table-column label="订单状态" prop="state">
           <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.state === '0'"
               >未完成</el-tag
@@ -38,7 +38,7 @@
             >
             <el-tag type="danger" v-else>已取消</el-tag>
           </template>
-        </el-table-column>
+        </el-table-column> -->
          <el-table-column label="修改状态" prop="state">
           <template slot-scope="scope">
             <el-button

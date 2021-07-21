@@ -195,7 +195,7 @@ export default {
      
       console.log(del)
  const { data: res } = await this.$http.post('Dish/DeleteDish',del)
-       console.log(editdish)
+  //     console.log(editdish)
       console.log(res)
       if (res.code !== 200) {
         return this.$message.error('删除菜品失败！')

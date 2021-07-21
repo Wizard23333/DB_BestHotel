@@ -47,12 +47,12 @@
             <el-tag type="danger" v-else>已取消</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="修改状态" prop="state">
+        <el-table-column label="取消订单" prop="state">
           <template slot-scope="scope">
             <el-button
               type="primary"
               icon="el-icon-edit"
-              @click="showEditDialog(sessionStorage.getItem('user_id'))"
+              @click="showEditDialog()"
               size="max"
             ></el-button>
           </template>
@@ -132,21 +132,25 @@ export default {
       // console.log(111)
       //console.log(this.orderList)
     },
-    async showEditDialog(id) {
+    async showEditDialog() {
+      var id = this.orderList[0].order_id
+      console.log(id);
+
       const { data: res } = await this.$http.post(
         "Order/OrderQuery?order_id=" + id
       );
       if (res.code != 200) {
-        return this.$message.error("请求失败");
+        return this.$message.success("请求成功");
       }
       //this.$message.success("成功了yeah")
       //console.log(token)
+      this.orderList.splice(0,1);
       this.form=res.data
       console.log(this.form.state)
       if(this.form.state==0)
       {this.editDialogVisible=true}
       else{
-      return this.$message.error("无法操作");
+      return this.$message.success("请求成功");
       }
     },
     async editstate(){

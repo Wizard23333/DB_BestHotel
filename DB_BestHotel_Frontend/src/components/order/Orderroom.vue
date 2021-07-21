@@ -135,7 +135,8 @@ export default {
         stay_time: '',
         room_type: '',
         client_telephonenumber: '',
-        order_date: ''
+        order_date: '',
+        amount: ''
       },
       // 添加表单的验证规则对象
       addOrderFormRules: {

@@ -29,9 +29,9 @@
         <el-table-column label="用户电话" prop="client_telephonenumber"></el-table-column>
         <el-table-column label="订单状态" prop="ordertype">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.pay_status === '0'">未完成</el-tag>
-            <el-tag type="danger" v-else-if="scope.row.pay_status === '1'">进行中</el-tag>
-            <el-tag type="danger" v-else-if="scope.row.pay_status === '2'">已完成</el-tag>
+            <el-tag type="success" v-if="scope.row.dish_order_state == '0'">未完成</el-tag>
+            <el-tag type="danger" v-else-if="scope.row.dish_order_state == '1'">进行中</el-tag>
+            <el-tag type="danger" v-else-if="scope.row.dish_order_state == '2'">已完成</el-tag>
             <el-tag type="danger" v-else>已取消</el-tag>
           </template>
         </el-table-column>
@@ -78,8 +78,8 @@
 <!-- 修改订单的对话框 -->
     <el-dialog title="修改订单" :visible.sync="editOrderVisible" width="50%" @close="editOrderClosed">
        <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
-        <el-form-item label="订单状态" prop="state">
-          <el-input  v-model="editForm.state"></el-input>
+        <el-form-item label="订单状态" prop="dish_order_state">
+          <el-input  v-model="editForm.dish_order_state"></el-input>
         </el-form-item>
       </el-form>
        <span slot="footer" class="dialog-footer">
@@ -134,7 +134,7 @@ export default {
         client_telephonenumber: [
           { required: true, message: '请输入用户电话', trigger: 'blur' }
         ],
-        number: [
+        anumber: [
           { required: true, message: '请输入菜品数量', trigger: 'blur' }
         ],
         dish_order_date: [
@@ -181,12 +181,13 @@ export default {
     },
     // 展示编辑对话框这里有问题
     async showEditOrder (id) {
-      const { data: res } = await this.$http.post('Order/OrderQuery?order_id=' + id, id)
+      const { data: res } = await this.$http.post('Order/DishOrderListInfo?query=' + id, id)
       if (res.code !== 200) {
         return this.$message.error('查询订单信息失败！')
       }
-
-      this.editForm = res.data
+      console.log(res)
+      this.editForm = res.data.list[0]
+      console.log(123456789987456321)
       console.log(this.editForm)
       this.editOrderVisible = true
     },
@@ -199,10 +200,11 @@ export default {
         if (!valid) return
         // 发起修改订单信息的数据请求这里有问题
         console.log(this.editForm)
+        console.log(999999999)
         const { data: res } = await this.$http.post(
-          '/Order/OrderModify?order_id=' + this.editForm.order_id + '&state=' + this.editForm.state, this.editForm
+          '/Order/OrderDishModify?order_id=' + this.editForm.order_id + '&state=' + this.editForm.dish_order_state, this.editForm
         )
-
+        console.log(res)
         if (res.code !== 200) {
           return this.$message.error('更新订单信息失败！')
         }

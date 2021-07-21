@@ -277,7 +277,7 @@ export default {
     toAdd() {
       this.dialogFormVisible = true;
       this.roomType = "";
-      this.roomCondition = "";
+      this.roomCondition = "空闲";
       this.roomPrice = "";
       this.qubie = "add";
     },

@@ -58,7 +58,7 @@
        <el-menu-item index="dishList">
         <template slot="title">
           <i class="el-icon-fork-spoon"></i>
-          <span>菜单系统</span>
+          <span>餐饮系统</span>
          
         </template>
        
