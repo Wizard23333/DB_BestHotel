@@ -31,6 +31,10 @@ namespace BackEnd
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
+            services.AddHttpContextAccessor();
+            services.AddSession();
+            services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +46,8 @@ namespace BackEnd
             }
 
             app.UseHttpsRedirection();
+
+            
 
             app.UseRouting();
 
@@ -55,6 +61,7 @@ namespace BackEnd
             });
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {
