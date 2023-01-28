@@ -4,7 +4,7 @@
 
 **1. 搭建Node.js环境：**
 
-- 访问https://nodejs.org/en/下载最新版NodeJS环境即可(选择左侧14.17.0 LTS即可)
+- 访问 [nodejs.org](https://nodejs.org/en/) 下载最新版 NodeJS 环境即可(选择左侧14.17.0 LTS即可)
 
 <img src="./README.assets/image-20210721221034226.png" alt="image-20210721221034226" style="zoom:50%;" />
 
@@ -48,7 +48,7 @@
      cd/d D:\***\Projects\DB_BestHotel
      ```
 
-     ***(换用成自己的路径)
+     (换用成自己的路径)
 
   2. 安装依赖
 
